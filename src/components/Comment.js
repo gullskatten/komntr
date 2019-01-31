@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Tooltip }  from 'react-tippy';
+import { Tooltip } from 'react-tippy';
 import {
-    CommentWrapper,
-    CircularIconWrapper,
-    CommentUsername,
-    CommentText
+  CommentWrapper,
+  CircularIconWrapper,
+  CommentUsername,
+  CommentText
 } from '../styleguides/CommentStyles';
-
+import determineUsername from '../utils/determineUsername';
 
 export const CommentContentWrapper = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ export const CommentTextWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  
+
   &::before {
     background-color: #555;
     content: '\00a0';
@@ -41,35 +41,26 @@ export const CommentTextWrapper = styled.div`
   }
 `;
 
-
-const determineUsername = name => {
-  const nameSplit = name.split(' ');
-
-  if (nameSplit.length > 1) {
-    return (
-      nameSplit[0].substr(0, 1).toUpperCase() +
-      nameSplit[1].substr(0, 1).toUpperCase()
-    );
-  }
-};
-
 const Comment = ({ comment, isOwn }) => {
   return (
     <CommentWrapper>
       <CommentContentWrapper>
-      <Tooltip title={comment.createdBy} position="top">
-        <CircularIconWrapper>
-          <CommentUsername>
-            {determineUsername(comment.createdBy)}
-          </CommentUsername>
-        </CircularIconWrapper>
+        <Tooltip title={comment.createdBy} position="top">
+          <CircularIconWrapper>
+            <CommentUsername>
+              {determineUsername(comment.createdBy)}
+            </CommentUsername>
+          </CircularIconWrapper>
         </Tooltip>
-        <Tooltip title={`Sendt ${moment(comment.created).calendar()}`} position="bottom">
-        <CommentTextWrapper isOwn={isOwn}>
-          <CommentText>
-            {comment.comment || 'Ingen kommentartekst.'}
-          </CommentText>
-        </CommentTextWrapper>
+        <Tooltip
+          title={`Sendt ${moment(comment.created).calendar()}`}
+          position="bottom"
+        >
+          <CommentTextWrapper isOwn={isOwn}>
+            <CommentText>
+              {comment.comment || 'Ingen kommentartekst.'}
+            </CommentText>
+          </CommentTextWrapper>
         </Tooltip>
       </CommentContentWrapper>
     </CommentWrapper>

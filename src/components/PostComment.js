@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const CommentFieldWrapper = styled.div`
-  
-`;  
+const CommentFieldWrapper = styled.div``;
 
 const TextAreaWrapper = styled.div`
   width: 100%;
@@ -33,7 +31,7 @@ const StyledTextArea = styled.textarea`
   &:focus {
     border-left: 15px solid #624694;
     height: 135px;
-    box-shadow: 0 -10px 10px -5px rgba(0,0,0,0.3);
+    box-shadow: 0 -10px 10px -5px rgba(0, 0, 0, 0.3);
   }
 
   &::placeholder {
@@ -68,38 +66,37 @@ const PostCommentButtonText = styled.span`
   letter-spacing: 0.1rem;
 `;
 
-export default class PostComment extends React.Component {
-  
-  state = {
-    commentText: ''
+export default function PostComment(props) {
+  const { handlePostComment } = props;
+  const [commentText, setCommentText] = useState('');
+
+  function handleInputChange(e) {
+    setCommentText(e.target.value);
   }
 
-  handleInputChange = (e) => {
-    this.setState({commentText: e.target.value});
+  function resetInput() {
+    setCommentText('');
   }
 
-  resetInput = () => {
-    this.setState({ commentText: ''});
-  }
-
-  render() {
-    const { commentText } = this.state;
-    const { handlePostComment } = this.props;
-    return(
-      <CommentFieldWrapper>
-          <TextAreaWrapper>
-              <StyledTextArea 
-              placeholder="Skriv en ny kommentar.." 
-              value={commentText} 
-              onChange={this.handleInputChange}/>
-          </TextAreaWrapper>
-          <PostCommentButtonWrapper>
-                <PostCommentButton onClick={() => {handlePostComment(commentText); this.resetInput() }}>
-                  <PostCommentButtonText>SEND</PostCommentButtonText>
-                </PostCommentButton>
-              </PostCommentButtonWrapper>
-      </CommentFieldWrapper>
-  )
-  }
-   
+  return (
+    <CommentFieldWrapper>
+      <TextAreaWrapper>
+        <StyledTextArea
+          placeholder="Skriv en ny kommentar.."
+          value={commentText}
+          onChange={handleInputChange}
+        />
+      </TextAreaWrapper>
+      <PostCommentButtonWrapper>
+        <PostCommentButton
+          onClick={() => {
+            handlePostComment(commentText);
+            resetInput();
+          }}
+        >
+          <PostCommentButtonText>SEND</PostCommentButtonText>
+        </PostCommentButton>
+      </PostCommentButtonWrapper>
+    </CommentFieldWrapper>
+  );
 }
