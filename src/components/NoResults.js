@@ -12,11 +12,12 @@ const NoContentText = styled.span`
   color: #777;
 `;
 
-const NoContentFound = ({ label }) => {
+export default function NoContentFound(props) {
+  const { label } = props;
+
   return (
     <NoContentWrapper>
       <NoContentText>{label || 'Nothing to show here..'}</NoContentText>
     </NoContentWrapper>
   );
-};
-export default NoContentFound;
+}

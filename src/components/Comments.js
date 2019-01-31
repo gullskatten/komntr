@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { Scrollbars } from 'react-custom-scrollbars';
+import initialComments from '../data/sample_comments';
 import NoResults from './NoResults';
+import PostComment from './PostComment';
 import Comment from './Comment';
 import OwnComment from './OwnComment';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Container from '../styleguides/Container';
+import Flex from '../styleguides/Flex';
 
 const CommentsWrapper = styled.div`
   width: 100%;
@@ -14,56 +18,96 @@ const CommentPadder = styled.div`
   margin: 15px 0;
 `;
 
-const FlexReverseFlow = styled.div`
-    display: flex;
-    flex-flow: column-reverse;
+const NewComment = styled(Flex)`
+  position: fixed;
+  bottom: 5px;
+  width: 100%;
+
+  @media all and (max-width: 650px) {
+    flex-basis: 10%;
+  }
 `;
 
-export default class Comments extends React.Component {
-  state = {};
-   
-  componentDidUpdate = () => {
-    if(this.scrollComponent) {
-      this.scrollComponent.scrollToBottom();
-    }
+export default function _Comments() {
+  const [comments, setComments] = useState(initialComments);
+  const scrollRef = useRef(null);
+
+  function postNewComment(commentText) {
+    const newComment = {
+      id: Math.floor(Math.random() * 13337),
+      comment: commentText,
+      username: 'ESGU2',
+      created: new Date(),
+      createdBy: 'Espen Gudmundsen'
+    };
+
+    setComments([newComment, ...comments]);
   }
 
-  renderNoComments() {
-    const { comments } = this.props;
+  useEffect(
+    () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollToBottom();
+      }
+    },
+    [scrollRef.current, comments.length]
+  );
 
-    if (!comments || !comments.length) {
-      return <NoResults label={'Ingen har kommentert her enda. 😞'} />;
-    }
-  }
-
-  renderComments() {
-    const { comments } = this.props;
-
-    if (comments && comments.length) {
-      return comments.map(comment => {
-        return (
-          <CommentPadder key={comment.id}>
-          {
-              comment.username === "ESGU2" ?  <OwnComment comment={comment} /> : <Comment comment={comment}/>
-          }
-          </CommentPadder>
-        );
-      });
-    }
-  }
-
-  render() {
-    return (
-      <CommentsWrapper >
-          <Scrollbars ref={c => { this.scrollComponent = c }} renderThumbVertical={
-              ({ style, ...props }) => <div {...props} style={{ ...style, backgroundColor: '#624694', borderRadius: '5px'}}/>
-            }>
-              <FlexReverseFlow>
-            <>{this.renderNoComments()}</>
-            <>{this.renderComments()}</>
-              </FlexReverseFlow>
-          </Scrollbars>
-      </CommentsWrapper>
-    );
-  }
+  return (
+    <>
+      <Flex
+        justify="center"
+        alignItems="center"
+        direction="column"
+        basis="auto"
+      >
+        <Container>
+          <CommentsWrapper>
+            <Scrollbars
+              ref={c => {
+                scrollRef.current = c;
+              }}
+              renderThumbVertical={({ style, ...props }) => (
+                <div
+                  {...props}
+                  style={{
+                    ...style,
+                    backgroundColor: '#624694',
+                    borderRadius: '5px'
+                  }}
+                />
+              )}
+            >
+              <Flex flexFlow="column-reverse">
+                {!comments || comments.length === 0 ? (
+                  <NoResults label={'Ingen har kommentert her enda. 😞'} />
+                ) : (
+                  <>
+                    {comments.map(comment => {
+                      return (
+                        <CommentPadder key={comment.id}>
+                          {comment.username === 'ESGU2' ? (
+                            <OwnComment comment={comment} />
+                          ) : (
+                            <Comment comment={comment} />
+                          )}
+                        </CommentPadder>
+                      );
+                    })}
+                  </>
+                )}
+              </Flex>
+            </Scrollbars>
+          </CommentsWrapper>
+        </Container>
+      </Flex>
+      <NewComment basis={'5%'}>
+        <Container>
+          <PostComment
+            handlePostComment={commentText => postNewComment(commentText)}
+          />
+        </Container>
+      </NewComment>
+    </>
+  );
 }

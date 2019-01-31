@@ -1,14 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Comments from './Comments';
 import styled from 'styled-components';
-import initialComments from '../data/sample_comments';
-import PostComment from './PostComment';
-
-const Content = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
+import Systems from './Systems';
+import Objects from './Objects';
+import Flex from '../styleguides/Flex';
+import Container from '../styleguides/Container';
 
 const AppTitleWrapper = styled.nav`
   background: #111;
@@ -20,97 +17,43 @@ const AppTitleWrapper = styled.nav`
   z-index: 1;
   position: sticky;
   padding: 1rem 0;
-  box-shadow: 0px 7px 10px 1px rgb(0,0,0,0.4);
+  box-shadow: 0px 7px 10px 1px rgb(0, 0, 0, 0.4);
   border-bottom: 5px solid #624694;
 `;
-
-const Container = styled.div`
-  max-width: 1500px;
-  width: 100%;
-  `;
 
 const AppTitle = styled.h1`
   color: #fff;
   font-size: 3rem;
   margin: 0;
   padding: 0;
-  
+
   @media all and (max-width: 450px) {
     font-size: 1.8rem;
   }
 `;
-const CenteredWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
 
-const Title = styled(CenteredWrapper)`
-  flex-basis: 7%;
-`
-
-const AllComments = styled(CenteredWrapper)`
-  flex-basis: auto;
-
-`
-
-const NewComment = styled(CenteredWrapper)`
-  flex-basis: 5%;
-  position: fixed;
-  bottom: 5px;
-  width: 100%;
-  @media all and (max-width: 650px) {
-    flex-basis: 10%;
-  }
-`
-
-class App extends Component {
-  state = {
-    comments: initialComments
-  }
-  postNewComment = commentText => {
-    const { comments } = this.state;
-
-    const newComment = {
-      id: Math.floor(Math.random() * 13337), 
-      comment: commentText,
-      username: 'ESGU2',
-      created: new Date(),
-      createdBy: 'Espen Gudmundsen',
-    }
-
-    this.setState({
-      comments: [newComment, ...comments]
-    })
-  }
-
-  render() {
-
-    const { comments } = this.state;
-
-    return (
-      <Content>
-        <Title>
+export default function App() {
+  return (
+    <BrowserRouter>
+      <>
+        <Flex basis={'7%'}>
           <Container>
             <AppTitleWrapper>
-              <AppTitle>KOMNTR <span role="img" aria-label="logo">😼</span></AppTitle>
+              <AppTitle>
+                KOMNTR{' '}
+                <span role="img" aria-label="logo">
+                  😼
+                </span>
+              </AppTitle>
             </AppTitleWrapper>
           </Container>
-        </Title>
-        <AllComments>
-          <Container>
-            <Comments comments={comments} />   
-          </Container>
-        </AllComments>
-        <NewComment>
-          <Container>
-            <PostComment handlePostComment={commentText => this.postNewComment(commentText)}/> 
-          </Container>
-        </NewComment>
-      </Content>
-    );
-  }
+        </Flex>
+        <Switch>
+          <Route path="/" exact component={Systems} />
+          <Route path="/:systemId" exact component={Objects} />
+          <Route path="/:systemId/:objectId" exact component={Comments} />
+        </Switch>
+      </>
+    </BrowserRouter>
+  );
 }
-
-export default App;

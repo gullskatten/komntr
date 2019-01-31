@@ -8,7 +8,6 @@ export const CommentWrapper = styled.div`
 export const CommentText = styled.span`
   color: #fff;
   max-width: 500px;
-
 `;
 
 export const CircularIconWrapper = styled.div`

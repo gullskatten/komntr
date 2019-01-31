@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Tooltip }  from 'react-tippy';
+import { Tooltip } from 'react-tippy';
 import {
-    CommentWrapper,
-    CircularIconWrapper,
-    CommentUsername,
-    CommentText
+  CommentWrapper,
+  CircularIconWrapper,
+  CommentUsername,
+  CommentText
 } from '../styleguides/CommentStyles';
+import determineUsername from '../utils/determineUsername';
 
 const OwnCommentWrapper = styled.div`
-    display: flex;
-    margin-left: auto;
-    margin-right: 0.8rem;
+  display: flex;
+  margin-left: auto;
+  margin-right: 0.8rem;
 `;
-
 
 export const CommentTextWrapper = styled.div`
   margin: 0 1.5rem;
@@ -25,55 +25,47 @@ export const CommentTextWrapper = styled.div`
   align-items: center;
   position: relative;
 
-&::before {
-  background-color: #624694;
-  content: '\00a0';
-  display: block;
-  height: 16px;
-  position: absolute;
-  top: 6px;
-  right: -1px;
-  transform: rotate(24deg) skew(-33deg);
-  -moz-transform: rotate(24deg) skew(-33deg);
-  -ms-transform: rotate(24deg) skew(-33deg);
-  -o-transform: rotate(24deg) skew(-33deg);
-  -webkit-transform: rotate(24deg) skew(-33deg);
-  width: 12px;
-}
+  &::before {
+    background-color: #624694;
+    content: '\00a0';
+    display: block;
+    height: 16px;
+    position: absolute;
+    top: 6px;
+    right: -1px;
+    transform: rotate(24deg) skew(-33deg);
+    -moz-transform: rotate(24deg) skew(-33deg);
+    -ms-transform: rotate(24deg) skew(-33deg);
+    -o-transform: rotate(24deg) skew(-33deg);
+    -webkit-transform: rotate(24deg) skew(-33deg);
+    width: 12px;
+  }
 `;
 
-const determineUsername = name => {
-  const nameSplit = name.split(' ');
+export default function OwnComment(props) {
+  const { comment } = props;
 
-  if (nameSplit.length > 1) {
-    return (
-      nameSplit[0].substr(0, 1).toUpperCase() +
-      nameSplit[1].substr(0, 1).toUpperCase()
-    );
-  }
-};
-
-const OwnComment = ({ comment }) => {
   return (
     <CommentWrapper>
-        
       <OwnCommentWrapper>
-      <Tooltip title={`Sendt ${moment(comment.created).calendar()}`} position="bottom">
-      <CommentTextWrapper secondary>
-          <CommentText>
-            {comment.comment || 'Ingen kommentartekst.'}
-          </CommentText>
-        </CommentTextWrapper>
+        <Tooltip
+          title={`Sendt ${moment(comment.created).calendar()}`}
+          position="bottom"
+        >
+          <CommentTextWrapper secondary>
+            <CommentText>
+              {comment.comment || 'Ingen kommentartekst.'}
+            </CommentText>
+          </CommentTextWrapper>
         </Tooltip>
         <Tooltip title={comment.createdBy} position="top">
-        <CircularIconWrapper>
-          <CommentUsername>
-            {determineUsername(comment.createdBy)}
-          </CommentUsername>
-        </CircularIconWrapper>
+          <CircularIconWrapper>
+            <CommentUsername>
+              {determineUsername(comment.createdBy)}
+            </CommentUsername>
+          </CircularIconWrapper>
         </Tooltip>
       </OwnCommentWrapper>
     </CommentWrapper>
   );
-};
-export default OwnComment;
+}
