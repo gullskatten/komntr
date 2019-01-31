@@ -29,9 +29,6 @@ const Container = styled.div`
   width: 100%;
   `;
 
-const ContainerWithShadow = styled(Container)`
-  box-shadow: 0 -10px 10px -5px rgba(0,0,0,0.3);
-`;
 const AppTitle = styled.h1`
   color: #fff;
   font-size: 3rem;
@@ -51,7 +48,6 @@ const CenteredWrapper = styled.div`
 
 const Title = styled(CenteredWrapper)`
   flex-basis: 7%;
-  
 `
 
 const AllComments = styled(CenteredWrapper)`
@@ -61,8 +57,9 @@ const AllComments = styled(CenteredWrapper)`
 
 const NewComment = styled(CenteredWrapper)`
   flex-basis: 5%;
-  z-index: 1;
-
+  position: fixed;
+  bottom: 5px;
+  width: 100%;
   @media all and (max-width: 650px) {
     flex-basis: 10%;
   }
@@ -107,9 +104,9 @@ class App extends Component {
           </Container>
         </AllComments>
         <NewComment>
-          <ContainerWithShadow>
+          <Container>
             <PostComment handlePostComment={commentText => this.postNewComment(commentText)}/> 
-          </ContainerWithShadow>
+          </Container>
         </NewComment>
       </Content>
     );

@@ -2,18 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CommentFieldWrapper = styled.div`
+  
 `;  
 
 const TextAreaWrapper = styled.div`
   width: 100%;
   max-width: 1500px;
   background: #111;
+  position: relative;
 `;
 
 const StyledTextArea = styled.textarea`
+  position: absolute;
+  bottom: 0;
   padding: 0.6rem 0.8rem;
   outline: 0;
-  overflow: overlay;
+  overflow: hidden;
   font-size: 1rem;
   transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
   border: 0;
@@ -24,11 +28,12 @@ const StyledTextArea = styled.textarea`
   resize: none;
   font-family: 'Roboto', sans-serif;
   width: 100%;
-  min-height: 40px;
   height: 35px;
 
   &:focus {
     border-left: 15px solid #624694;
+    height: 135px;
+    box-shadow: 0 -10px 10px -5px rgba(0,0,0,0.3);
   }
 
   &::placeholder {
@@ -83,14 +88,16 @@ export default class PostComment extends React.Component {
     return(
       <CommentFieldWrapper>
           <TextAreaWrapper>
-              <StyledTextArea placeholder="Skriv en ny kommentar.." value={commentText} onChange={this.handleInputChange}/>
-              <PostCommentButtonWrapper>
+              <StyledTextArea 
+              placeholder="Skriv en ny kommentar.." 
+              value={commentText} 
+              onChange={this.handleInputChange}/>
+          </TextAreaWrapper>
+          <PostCommentButtonWrapper>
                 <PostCommentButton onClick={() => {handlePostComment(commentText); this.resetInput() }}>
                   <PostCommentButtonText>SEND</PostCommentButtonText>
                 </PostCommentButton>
               </PostCommentButtonWrapper>
-          </TextAreaWrapper>
-           
       </CommentFieldWrapper>
   )
   }
