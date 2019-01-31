@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-import initialComments from '../data/sample_comments';
+import sample_comments from '../data/sample_comments';
 import NoResults from './NoResults';
 import PostComment from './PostComment';
 import Comment from './Comment';
@@ -28,11 +28,21 @@ const NewComment = styled(Flex)`
   }
 `;
 
-export default function _Comments() {
-  const [comments, setComments] = useState(initialComments);
+export default function _Comments(props) {
+  const {
+    match: {
+      params: { postId }
+    }
+  } = props;
+  const currentComments = sample_comments.filter(f => f.postId === postId);
+  const [comments, setComments] = useState(currentComments);
   const scrollRef = useRef(null);
 
   function postNewComment(commentText) {
+    if (commentText === '') {
+      return;
+    }
+
     const newComment = {
       id: Math.floor(Math.random() * 13337),
       comment: commentText,

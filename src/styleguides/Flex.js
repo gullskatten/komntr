@@ -17,6 +17,16 @@ const Flex = styled.div`
     css`
       flex-flow: ${props.flexFlow};
     `};
+
+  ${props =>
+    props.child &&
+    css`
+      padding: 0 ${props.gap || '1rem'};
+
+      > * {
+        margin: 0 -${props.gap || '1rem'};
+      }
+    `};
 `;
 
 export default Flex;
