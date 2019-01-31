@@ -1,5 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import sample_posts from '../data/sample_posts';
 
-export default function Objects() {
-  return <div>Single system thread. Here comes list of objects</div>;
+export default function Objects(props) {
+  const {
+    match: {
+      params: { systemId }
+    }
+  } = props;
+
+  const currentPosts = sample_posts.filter(f => f.channelId === systemId);
+
+  return (
+    <div>
+      Single system thread. Here comes list of objects
+      {currentPosts.map(item => (
+        <li style={{ color: 'white' }}>
+          <Link to={`/${systemId}/${item.id}`}>
+            {item.name} - {item.channelId}
+          </Link>
+        </li>
+      ))}
+    </div>
+  );
 }
