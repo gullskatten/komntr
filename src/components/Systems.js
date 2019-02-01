@@ -12,6 +12,7 @@ const StyledSystemWrapper = styled(({ ...props }) => <Link {...props} />)`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  text-decoration: none;
 `;
 
 const StyledInitials = styled.div`
