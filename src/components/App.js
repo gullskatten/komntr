@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Comments from './Comments';
 import styled from 'styled-components';
 import Systems from './Systems';

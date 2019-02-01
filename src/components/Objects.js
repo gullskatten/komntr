@@ -15,7 +15,7 @@ export default function Objects(props) {
     <div>
       Single system thread. Here comes list of objects
       {currentPosts.map(item => (
-        <li style={{ color: 'white' }}>
+        <li style={{ color: 'white' }} key={item.id}>
           <Link to={`/${systemId}/${item.id}`}>
             {item.name} - {item.channelId}
           </Link>
