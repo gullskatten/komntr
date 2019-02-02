@@ -48,7 +48,10 @@ const AppTitle = styled.h1`
   white-space: nowrap;
 
   @media all and (max-width: 450px) {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+    text-overflow: ellipsis;
+    width: 280px;
+    overflow: hidden;
   }
 `;
 
