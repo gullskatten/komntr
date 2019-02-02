@@ -27,6 +27,11 @@ const Flex = styled.div`
         margin: 0 -${props.gap || '1rem'};
       }
     `};
+    ${props =>
+      props.growToBottom &&
+      css`
+        flex: 1;
+      `}; 
 `;
 
 export default Flex;

@@ -1,9 +1,13 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   white-space: pre-wrap;
+
+  ${props => props.isLast && css`
+    margin-bottom: 60px;
+  `}
 `;
 
 export const CommentText = styled.span`
@@ -11,6 +15,7 @@ export const CommentText = styled.span`
   max-width: 500px;
   font-family: 'Roboto', sans-serif;
   overflow-wrap: break-word;
+  word-break: break-word;
 `;
 
 export const CircularIconWrapper = styled.div`

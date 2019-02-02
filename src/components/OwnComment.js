@@ -43,10 +43,10 @@ export const CommentTextWrapper = styled.div`
 `;
 
 export default function OwnComment(props) {
-  const { comment } = props;
+  const { comment, isLast } = props;
 
   return (
-    <CommentWrapper>
+    <CommentWrapper isLast={isLast}>
       <OwnCommentWrapper>
         <Tooltip
           title={`Sendt ${moment(comment.created).calendar()}`}

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { fadeInBottom } from '../utils/animations';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { fadeInBottom } from "../utils/animations";
+
 const CommentFieldWrapper = styled.div`
   background-color: #222;
 `;
@@ -22,10 +23,10 @@ const StyledTextArea = styled.textarea`
   transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
   border: 0;
   background-color: #111;
-  color: #fff; 
+  color: #fff;
   outline: none;
   resize: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   width: 100%;
   height: 35px;
 
@@ -36,7 +37,7 @@ const StyledTextArea = styled.textarea`
 
   &::placeholder {
     color: #777;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
   }
 `;
 
@@ -51,13 +52,16 @@ const PostCommentButton = styled.button`
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 100%;
+  animation: ${fadeInBottom} 0.25s ease-in-out 0s 1;
 `;
 
 const PostCommentButtonWrapper = styled.div`
   display: flex;
-  animation: ${fadeInBottom} .25s ease-in-out 0s 1;
   width: 100%;
-  `;
+  height: 40px;
+  background-color: #111;
+`;
 
 const PostCommentButtonText = styled.span`
   color: #fff;
@@ -68,14 +72,14 @@ const PostCommentButtonText = styled.span`
 
 export default function PostComment(props) {
   const { handlePostComment } = props;
-  const [commentText, setCommentText] = useState('');
+  const [commentText, setCommentText] = useState("");
 
   function handleInputChange(e) {
     setCommentText(e.target.value);
   }
 
   function resetInput() {
-    setCommentText('');
+    setCommentText("");
   }
 
   return (
@@ -87,19 +91,19 @@ export default function PostComment(props) {
           onChange={handleInputChange}
         />
       </TextAreaWrapper>
-      {commentText.length > 0 && (
-         <PostCommentButtonWrapper>
-         <PostCommentButton
-           onClick={() => {
-             handlePostComment(commentText);
-             resetInput();
-           }}
-         >
-           <PostCommentButtonText>SEND</PostCommentButtonText>
-         </PostCommentButton>
-       </PostCommentButtonWrapper>
-      )}
-     
+
+      <PostCommentButtonWrapper>
+        {commentText.length > 0 && (
+          <PostCommentButton
+            onClick={() => {
+              handlePostComment(commentText);
+              resetInput();
+            }}
+          >
+            <PostCommentButtonText>SEND</PostCommentButtonText>
+          </PostCommentButton>
+        )}
+      </PostCommentButtonWrapper>
     </CommentFieldWrapper>
   );
 }

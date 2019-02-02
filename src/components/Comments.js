@@ -9,9 +9,12 @@ import OwnComment from './OwnComment';
 import Container from '../styleguides/Container';
 import Flex from '../styleguides/Flex';
 
+const CommentsContainer = styled.div`
+`;
+
 const CommentsWrapper = styled.div`
   width: 100%;
-  height: 70vh;
+  height: 73vh;
 `;
 
 const CommentPadder = styled.div`
@@ -20,7 +23,7 @@ const CommentPadder = styled.div`
 
 const NewComment = styled(Flex)`
   position: fixed;
-  bottom: 5px;
+  bottom: 0;
   width: 100%;
 
   @media all and (max-width: 650px) {
@@ -57,14 +60,14 @@ export default function _Comments(props) {
   useEffect(
     () => {
       if (scrollRef.current) {
-        scrollRef.current.scrollToBottom();
+        scrollRef.current.scrollToBottom(60);
       }
     },
     [scrollRef.current, comments.length]
   );
 
   return (
-    <>
+    <CommentsContainer>
       <Flex
         justify="center"
         alignItems="center"
@@ -93,13 +96,13 @@ export default function _Comments(props) {
                   <NoResults label={'Ingen har kommentert her enda. 😞'} />
                 ) : (
                   <>
-                    {comments.map(comment => {
+                    {comments.map((comment, idx) => {
                       return (
                         <CommentPadder key={comment.id}>
                           {comment.username === 'ESGU2' ? (
-                            <OwnComment comment={comment} />
+                            <OwnComment comment={comment} isLast={idx === 0}/>
                           ) : (
-                            <Comment comment={comment} />
+                            <Comment comment={comment} isLast={idx === 0}/>
                           )}
                         </CommentPadder>
                       );
@@ -118,6 +121,6 @@ export default function _Comments(props) {
           />
         </Container>
       </NewComment>
-    </>
+    </CommentsContainer>
   );
 }

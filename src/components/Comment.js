@@ -41,9 +41,9 @@ export const CommentTextWrapper = styled.div`
   }
 `;
 
-const Comment = ({ comment, isOwn }) => {
+const Comment = ({ comment, isLast }) => {
   return (
-    <CommentWrapper>
+    <CommentWrapper isLast={isLast}>
       <CommentContentWrapper>
         <Tooltip title={comment.createdBy} position="top">
           <CircularIconWrapper>
@@ -56,7 +56,7 @@ const Comment = ({ comment, isOwn }) => {
           title={`Sendt ${moment(comment.created).calendar()}`}
           position="bottom"
         >
-          <CommentTextWrapper isOwn={isOwn}>
+          <CommentTextWrapper>
             <CommentText>
               {comment.comment || 'Ingen kommentartekst.'}
             </CommentText>
