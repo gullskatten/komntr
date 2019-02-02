@@ -23,7 +23,7 @@ const AppTitleWrapper = styled.nav`
   box-shadow: 0px 7px 10px 1px rgb(0, 0, 0, 0.4);
   border-bottom: 5px solid ${props => props.borderColor};
   height: 80px;
-  transition: all 0.25s ease-in-out;
+  transition: all .5s ease-in-out;
 `;
 
 const BackButton = styled.button`
@@ -46,7 +46,7 @@ const AppTitle = styled.h1`
   margin: 0 auto;
   text-align: center;
   white-space: nowrap;
-
+  
   @media all and (max-width: 450px) {
     font-size: 1.8rem;
   }

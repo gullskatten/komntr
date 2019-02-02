@@ -28,5 +28,11 @@ export default [
     name: 'How to master table tennis',
     description: 'General chat on how to become better in tabletennis.',
     channelId: '3'
+  }.name,
+  {
+    id: '5',
+    name: 'Brewmasters',
+    description: 'General chat on how to become better in the art of coffee brewing.',
+    channelId: '4'
   }
 ];
