@@ -2,8 +2,8 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Comments from './Comments';
 import styled from 'styled-components';
-import Systems from './Systems';
-import Objects from './Objects';
+import Channels from './Channels';
+import Posts from './Posts';
 import Flex from '../styleguides/Flex';
 import Container from '../styleguides/Container';
 import history from '../utils/history';
@@ -75,9 +75,9 @@ export default function App(props) {
         </Container>
       </Flex>
       <Switch>
-        <Route path="/" exact component={Systems} />
-        <Route path="/:systemId" exact component={Objects} />
-        <Route path="/:systemId/:postId" exact component={Comments} />
+        <Route path="/" exact component={Channels} />
+        <Route path="/:channelId" exact component={Posts} />
+        <Route path="/:channelId/:postId" exact component={Comments} />
       </Switch>
     </>
   );

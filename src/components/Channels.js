@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Container from '../styleguides/Container';
 import sample_channels from '../data/sample_channels';
-import determineUsername from '../utils/determineUsername';
+import determineInitials from '../utils/determineInitials';
 import Flex from '../styleguides/Flex';
+import determineColorForString from '../utils/determineColorForString';
 
-const StyledSystemWrapper = styled(({ ...props }) => <Link {...props} />)`
+const StyledChannelLink = styled(({ ...props }) => <Link {...props} />)`
   text-align: center;
   display: flex;
   justify-content: center;
@@ -17,7 +18,7 @@ const StyledSystemWrapper = styled(({ ...props }) => <Link {...props} />)`
 
 const StyledInitials = styled.div`
   padding: 4rem;
-  background-color: salmon;
+  background-color: ${props => props.color};
   color: #fff;
   border-radius: 50%;
   height: 50px;
@@ -37,7 +38,7 @@ const StyledName = styled.h2`
   font-weight: 300;
 `;
 
-export default function Systems() {
+export default function Channels() {
   return (
     <Container gutterTop>
       <Flex>
@@ -50,10 +51,10 @@ export default function Systems() {
               alignItems="center"
               justify="center"
             >
-              <StyledSystemWrapper to={`/${c.id}`}>
-                <StyledInitials>{determineUsername(c.name)}</StyledInitials>
+              <StyledChannelLink to={`/${c.id}`}>
+                <StyledInitials color={determineColorForString(c.name)}>{determineInitials(c.name)}</StyledInitials>
                 <StyledName>{c.name}</StyledName>
-              </StyledSystemWrapper>
+              </StyledChannelLink>
             </Flex>
           );
         })}

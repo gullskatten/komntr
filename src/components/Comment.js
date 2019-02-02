@@ -8,7 +8,8 @@ import {
   CommentUsername,
   CommentText
 } from '../styleguides/CommentStyles';
-import determineUsername from '../utils/determineUsername';
+import determineInitials from '../utils/determineInitials';
+import determineColorForString from '../utils/determineColorForString';
 
 export const CommentContentWrapper = styled.div`
   display: flex;
@@ -46,9 +47,9 @@ const Comment = ({ comment, isLast }) => {
     <CommentWrapper isLast={isLast}>
       <CommentContentWrapper>
         <Tooltip title={comment.createdBy} position="top">
-          <CircularIconWrapper>
+          <CircularIconWrapper color={determineColorForString(comment.createdBy)}>
             <CommentUsername>
-              {determineUsername(comment.createdBy)}
+              {determineInitials(comment.createdBy)}
             </CommentUsername>
           </CircularIconWrapper>
         </Tooltip>

@@ -1,4 +1,4 @@
-export default function determineUsername(name) {
+export default function determineInitials(name) {
   const nameSplit = name.split(' ');
 
   if (nameSplit.length > 1) {

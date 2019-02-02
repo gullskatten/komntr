@@ -8,7 +8,8 @@ import {
   CommentUsername,
   CommentText
 } from '../styleguides/CommentStyles';
-import determineUsername from '../utils/determineUsername';
+import determineInitials from '../utils/determineInitials';
+import determineColorForString from '../utils/determineColorForString';
 
 const OwnCommentWrapper = styled.div`
   display: flex;
@@ -59,9 +60,9 @@ export default function OwnComment(props) {
           </CommentTextWrapper>
         </Tooltip>
         <Tooltip title={comment.createdBy} position="top">
-          <CircularIconWrapper>
+          <CircularIconWrapper color={"#624694"}>
             <CommentUsername>
-              {determineUsername(comment.createdBy)}
+              {determineInitials(comment.createdBy)}
             </CommentUsername>
           </CircularIconWrapper>
         </Tooltip>

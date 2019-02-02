@@ -20,7 +20,7 @@ export const CommentText = styled.span`
 
 export const CircularIconWrapper = styled.div`
   padding: 15px;
-  background-color: #000;
+  background-color: ${props => props.color || "#000"};
   border-radius: 50%;
   height: 50px;
   width: 50px;
