@@ -10,6 +10,7 @@ export default function Posts(props) {
   } = props;
 
   const currentPosts = sample_posts.filter(f => f.channelId === channelId);
+
   return (
     <div>
       {currentPosts.map(item => (
