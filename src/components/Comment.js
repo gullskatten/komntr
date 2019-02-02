@@ -1,33 +1,37 @@
-import React from 'react';
-import styled from 'styled-components';
-import moment from 'moment';
-import { Tooltip } from 'react-tippy';
+import React from "react";
+import styled from "styled-components";
+import moment from "moment";
+import { Tooltip } from "react-tippy";
 import {
   CommentWrapper,
   CircularIconWrapper,
   CommentUsername,
   CommentText
-} from '../styleguides/CommentStyles';
-import determineInitials from '../utils/determineInitials';
-import determineColorForString from '../utils/determineColorForString';
+} from "../styleguides/CommentStyles";
+import determineInitials from "../utils/determineInitials";
+import determineColorForString from "../utils/determineColorForString";
 
-export const CommentContentWrapper = styled.div`
+const CommentContentWrapper = styled.div`
   display: flex;
   margin-left: 0.8rem;
 `;
 
-export const CommentTextWrapper = styled.div`
+const CommentTextPadder = styled.div`
+  margin: 0.2rem 0;
+`;
+
+const CommentTextWrapper = styled.div`
   margin: 0 1.5rem;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 15px;
   background-color: #555;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   position: relative;
 
   &::before {
     background-color: #555;
-    content: '\00a0';
+    content: "\00a0";
     display: block;
     height: 16px;
     position: absolute;
@@ -42,12 +46,21 @@ export const CommentTextWrapper = styled.div`
   }
 `;
 
+const Username = styled.p`
+  margin: 0;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 2px;
+`;
+
 const Comment = ({ comment, isLast }) => {
   return (
     <CommentWrapper isLast={isLast}>
       <CommentContentWrapper>
         <Tooltip title={comment.createdBy} position="top">
-          <CircularIconWrapper color={determineColorForString(comment.createdBy)}>
+          <CircularIconWrapper
+            color={determineColorForString(comment.createdBy)}
+          >
             <CommentUsername>
               {determineInitials(comment.createdBy)}
             </CommentUsername>
@@ -58,9 +71,12 @@ const Comment = ({ comment, isLast }) => {
           position="bottom"
         >
           <CommentTextWrapper>
-            <CommentText>
-              {comment.comment || 'Ingen kommentartekst.'}
-            </CommentText>
+            <Username>{comment.createdBy}</Username>
+            <CommentTextPadder>
+              <CommentText>
+                {comment.comment || "Ingen kommentartekst."}
+              </CommentText>
+            </CommentTextPadder>
           </CommentTextWrapper>
         </Tooltip>
       </CommentContentWrapper>

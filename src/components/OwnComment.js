@@ -9,7 +9,6 @@ import {
   CommentText
 } from '../styleguides/CommentStyles';
 import determineInitials from '../utils/determineInitials';
-import determineColorForString from '../utils/determineColorForString';
 
 const OwnCommentWrapper = styled.div`
   display: flex;
