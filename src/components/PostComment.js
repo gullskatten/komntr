@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
-const CommentFieldWrapper = styled.div``;
+import { fadeInBottom } from '../utils/animations';
+const CommentFieldWrapper = styled.div`
+  background-color: #222;
+`;
 
 const TextAreaWrapper = styled.div`
   width: 100%;
@@ -20,8 +22,7 @@ const StyledTextArea = styled.textarea`
   transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
   border: 0;
   background-color: #111;
-  border-left: 5px solid #777;
-  color: #fff;
+  color: #fff; 
   outline: none;
   resize: none;
   font-family: 'Roboto', sans-serif;
@@ -29,7 +30,6 @@ const StyledTextArea = styled.textarea`
   height: 35px;
 
   &:focus {
-    border-left: 15px solid #624694;
     height: 135px;
     box-shadow: 0 -10px 10px -5px rgba(0, 0, 0, 0.3);
   }
@@ -45,20 +45,20 @@ const PostCommentButton = styled.button`
   padding: 0.5rem 1rem;
   background-color: #946ddc;
   border: 0;
-  border-radius: 5px;
-  border-bottom: 2px solid #624694;
+  border-bottom: 4px solid #624694;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
+  width: 100%;
 `;
 
 const PostCommentButtonWrapper = styled.div`
   display: flex;
-  margin-right: 5px;
-  margin-top: 5px;
-`;
+  animation: ${fadeInBottom} .25s ease-in-out 0s 1;
+  width: 100%;
+  `;
+
 const PostCommentButtonText = styled.span`
   color: #fff;
   font-weight: bold;
@@ -87,16 +87,19 @@ export default function PostComment(props) {
           onChange={handleInputChange}
         />
       </TextAreaWrapper>
-      <PostCommentButtonWrapper>
-        <PostCommentButton
-          onClick={() => {
-            handlePostComment(commentText);
-            resetInput();
-          }}
-        >
-          <PostCommentButtonText>SEND</PostCommentButtonText>
-        </PostCommentButton>
-      </PostCommentButtonWrapper>
+      {commentText.length > 0 && (
+         <PostCommentButtonWrapper>
+         <PostCommentButton
+           onClick={() => {
+             handlePostComment(commentText);
+             resetInput();
+           }}
+         >
+           <PostCommentButtonText>SEND</PostCommentButtonText>
+         </PostCommentButton>
+       </PostCommentButtonWrapper>
+      )}
+     
     </CommentFieldWrapper>
   );
 }

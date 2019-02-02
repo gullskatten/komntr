@@ -3,11 +3,14 @@ import styled from 'styled-components';
 export const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  white-space: pre-wrap;
 `;
 
 export const CommentText = styled.span`
   color: #fff;
   max-width: 500px;
+  font-family: 'Roboto', sans-serif;
+  overflow-wrap: break-word;
 `;
 
 export const CircularIconWrapper = styled.div`
