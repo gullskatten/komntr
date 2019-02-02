@@ -27,11 +27,17 @@ const Flex = styled.div`
         margin: 0 -${props.gap || '1rem'};
       }
     `};
-    ${props =>
-      props.growToBottom &&
-      css`
-        flex: 1;
-      `}; 
+  ${props =>
+    props.threeCol &&
+    css`
+    flex: 1 33%;
+
+
+    @media all and (max-width: 650px) {
+      flex: 1 50%;
+    }
+  `
+  }  
 `;
 
 export default Flex;

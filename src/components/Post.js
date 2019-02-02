@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import determineColorForString from "../utils/determineColorForString";
 
 
 const StyledObjectLink = styled(({ ...props }) => <Link {...props} />)`
@@ -19,8 +20,12 @@ const PostName = styled.h2`
 
 const PostDescription = styled.p`
     color: #fff;
-    font-style: italic;
     margin: 0;
+`;
+
+const PostTag = styled.span`
+    margin-right: 10px;
+    color: ${props => props.color};
 `;
 
 export default function Post({ post }) {
@@ -30,11 +35,15 @@ export default function Post({ post }) {
 
   return (
     <StyledObjectLink to={`/${post.channelId}/${post.id}`}>
+        
         <PostName>
-            {post.name}
+        <PostTag color={determineColorForString(post.name)}>
+            #
+        </PostTag>
+         {post.name}
         </PostName>
        <PostDescription>
-           There will be some description here later..
+            {post.description}
        </PostDescription>
     </StyledObjectLink>
   );

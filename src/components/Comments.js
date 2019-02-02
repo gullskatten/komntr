@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import sample_comments from '../data/sample_comments';
@@ -8,6 +8,9 @@ import Comment from './Comment';
 import OwnComment from './OwnComment';
 import Container from '../styleguides/Container';
 import Flex from '../styleguides/Flex';
+import { TitleContext } from '../context/AppTitleContext';
+import sample_posts from '../data/sample_posts';
+import determineColorForString from '../utils/determineColorForString';
 
 const CommentsContainer = styled.div`
 `;
@@ -41,6 +44,26 @@ export default function _Comments(props) {
   const [comments, setComments] = useState(currentComments);
   const scrollRef = useRef(null);
 
+  let { dispatch } = useContext(TitleContext);
+
+  useEffect(
+    () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollToBottom(60);
+      }
+    
+      const currentPost = sample_posts.find(post => post.id === postId);
+    
+    dispatch({
+      type: "set-title",
+      data: {
+        title: currentPost.name,
+        titleColor: determineColorForString(currentPost.name) 
+      }
+    })},
+    [scrollRef.current, comments.length]
+  );
+
   function postNewComment(commentText) {
     if (commentText === '') {
       return;
@@ -56,15 +79,6 @@ export default function _Comments(props) {
 
     setComments([newComment, ...comments]);
   }
-
-  useEffect(
-    () => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollToBottom(60);
-      }
-    },
-    [scrollRef.current, comments.length]
-  );
 
   return (
     <CommentsContainer>

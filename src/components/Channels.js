@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Container from '../styleguides/Container';
@@ -6,6 +6,7 @@ import sample_channels from '../data/sample_channels';
 import determineInitials from '../utils/determineInitials';
 import Flex from '../styleguides/Flex';
 import determineColorForString from '../utils/determineColorForString';
+import { TitleContext } from '../context/AppTitleContext';
 
 const StyledChannelLink = styled(({ ...props }) => <Link {...props} />)`
   text-align: center;
@@ -35,18 +36,31 @@ const StyledName = styled.h2`
   letter-spacing: 1px;
   text-transform: uppercase;
   font-size: 1.35rem;
-  font-weight: 300;
+  font-weight: bold;
+`;
+
+const ChannelsGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 export default function Channels() {
+  let { dispatch } = useContext(TitleContext);
+
+  useEffect(() => {
+    dispatch({
+      type: "default-title",
+    });
+  }, []);
+
   return (
     <Container gutterTop>
-      <Flex>
+      <ChannelsGrid>
         {sample_channels.map(c => {
           return (
             <Flex
               child
-              basis={'33%'}
+              threeCol
               key={c.id}
               alignItems="center"
               justify="center"
@@ -58,7 +72,7 @@ export default function Channels() {
             </Flex>
           );
         })}
-      </Flex>
+      </ChannelsGrid>
     </Container>
   );
 }

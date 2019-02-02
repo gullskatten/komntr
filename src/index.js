@@ -7,10 +7,13 @@ import * as serviceWorker from './serviceWorker';
 import 'moment/locale/nb';
 import 'react-tippy/dist/tippy.css';
 import history from './utils/history';
+import { TitleContextProvider } from './context/AppTitleContext';
 
 ReactDOM.render(
   <Router history={history}>
-    <App />
+    <TitleContextProvider>
+      <App />
+    </TitleContextProvider>
   </Router>,
   document.getElementById('root')
 );
