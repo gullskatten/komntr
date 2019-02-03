@@ -12,9 +12,8 @@ const CommentFieldWrapper = styled.div`
   ${props =>
     !props.loggedIn &&
     css`
+      padding: 2rem;
       text-align: center;
-      background-color: transparent;
-      padding: 0.5rem 0;
     `};
 `;
 
@@ -131,7 +130,7 @@ export default function PostComment(props) {
             </PostCommentButtonWrapper>
           </>
         ) : (
-          <LoginHandler buttonText="Logg inn med Google for å kommentere" />
+          <LoginHandler buttonText="Logg inn med Google" />
         )}
       </CommentFieldWrapper>
     </Busy>

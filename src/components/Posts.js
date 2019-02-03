@@ -5,6 +5,7 @@ import determineColorForString from '../utils/determineColorForString';
 import Container from '../styleguides/Container';
 import useApi from '../hooks/useApi';
 import Busy from './Busy';
+import CreatePostItem from './CreatePostItem';
 
 export default function Posts(props) {
   const { dispatch } = useContext(TitleContext);
@@ -40,6 +41,8 @@ export default function Posts(props) {
   return (
     <Busy busy={fetchingChannel || fetchingPosts}>
       <Container>
+          {/* <CreatePost channelId={channel.id}/> */}
+          <CreatePostItem channelId={channel._id} />
         {posts.map(item => (
           <Post post={item} key={item._id} />
         ))}
