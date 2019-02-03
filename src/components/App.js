@@ -11,6 +11,7 @@ import goBack from '../utils/goBack';
 import { arrowBack } from '../icons';
 import { TitleContext } from '../context/AppTitleContext';
 import { UserContext } from '../context/UserContext';
+import CreatePost from './CreatePost';
 
 const AppTitleWrapper = styled.nav`
   background: #111;
@@ -112,6 +113,7 @@ export default function App(props) {
       <Switch>
         <Route path="/" exact component={Channels} />
         <Route path="/:channelId" exact component={Posts} />
+        <Route path="/:channelId/create" exact component={CreatePost} />
         <Route path="/:channelId/:postId" exact component={Comments} />
       </Switch>
     </>

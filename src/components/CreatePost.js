@@ -4,7 +4,10 @@ import { fadeInBottom } from '../utils/animations';
 import useApi from '../hooks/useApi';
 import Busy from './Busy';
 import { UserContext } from '../context/UserContext';
+import { TitleContext } from '../context/AppTitleContext';
 import LoginHandler from './LoginHandler';
+import determineColorForString from '../utils/determineColorForString';
+import NoContentFound from './NoResults';
 
 const CommentFieldWrapper = styled.div`
   background-color: #222;
@@ -17,20 +20,19 @@ const CommentFieldWrapper = styled.div`
     `};
 `;
 
-const TextAreaWrapper = styled.div`
+const InputWrapper = styled.div`
   width: 100%;
-  max-width: 1500px;
   background: #111;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const StyledTextArea = styled.textarea`
-  position: absolute;
-  bottom: 0;
+const StyledInput = styled.input`
+ 
   padding: 0.6rem 0.8rem;
   outline: 0;
-  overflow: hidden;
-  font-size: 1rem;
+  font-size: 2.5rem;
   transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
   border: 0;
   background-color: #111;
@@ -39,10 +41,9 @@ const StyledTextArea = styled.textarea`
   resize: none;
   font-family: 'Roboto', sans-serif;
   width: 100%;
-  height: 35px;
+  height: 135px;
 
   &:focus {
-    height: 135px;
     box-shadow: 0 -10px 10px -5px rgba(0, 0, 0, 0.3);
   }
 
@@ -81,56 +82,107 @@ const PostCommentButtonText = styled.span`
   letter-spacing: 0.1rem;
 `;
 
-export default function PostComment(props) {
-  const { onCreateCommentSuccess, channelId, postId } = props;
-  const [commentText, setCommentText] = useState('');
-  const userContext = useContext(UserContext);
+const PostTag = styled.span`
+  padding: 0.5rem;
+  font-size: 5rem;
+  font-weight: bold;
+  margin-right: 10px;
+  color: ${props => props.color};
+  transition: color 0.5s ease-in-out;
+`;
 
+export default function CreatePost(props) {
+
+  const { dispatch } = useContext(TitleContext);
+  const userContext = useContext(UserContext);
+  const [hasLoadedChannel, setHasLoadedChannel] = useState(false);
+  const [postName, setPostName] = useState('');
+
+  const {
+    match: {
+      params: { channelId }
+    }
+  } = props;
+
+  const [fetchingChannel, channel] = useApi({
+    endpoint: `categories/${channelId}`,
+    fetchOnMount: true,
+    initialData: null,
+    onSuccess: currentChannel => {
+      setHasLoadedChannel(true);
+      dispatch({
+        type: 'set-title',
+        data: {
+          title: "Opprett ny post",
+          titleColor: "#624694"
+        }
+      });
+    },
+    onError: e => {
+      setHasLoadedChannel(true);
+    }  
+  });
+
+  
   function handleInputChange(e) {
-    setCommentText(e.target.value);
+    setPostName(e.target.value);
   }
 
   function resetInput() {
-    setCommentText('');
+    setPostName('');
   }
 
   // eslint-disable-next-line
-  const [creating, res, err, submitNewComment] = useApi({
-    endpoint: `categories/${channelId}/posts/${postId}/comments`,
+  const [creating, res, err, submitNewPost] = useApi({
+    endpoint: `categories/${channelId}/`,
     method: 'POST',
     body: {
-      body: commentText
+      body: postName
     },
-    onSuccess: () => {
-      onCreateCommentSuccess();
+    onSuccess: newPost => {
       resetInput();
+      props.history.push(`/${channelId}/${newPost.id}`)
+    },
+    onError: e => {
+
     }
   });
 
+  if(hasLoadedChannel && (channel === undefined || channel === null)) {
+    return (
+      <NoContentFound label="Fant ikke kanalen du lette etter.." />
+    )
+  }
   return (
-    <Busy busy={creating}>
+    <Busy busy={creating || fetchingChannel}>
       <CommentFieldWrapper loggedIn={userContext.data.loggedIn}>
         {userContext.data.loggedIn ? (
           <>
-            <TextAreaWrapper>
-              <StyledTextArea
+            <InputWrapper>
+              <PostTag color={determineColorForString(postName)}>#</PostTag>
+              <StyledInput
                 disabled={creating}
-                placeholder="Skriv en ny kommentar.."
-                value={commentText}
+                placeholder="Gi posten et navn.."
+                value={postName}
                 onChange={handleInputChange}
               />
-            </TextAreaWrapper>
-
+            </InputWrapper>
+            <StyledInput
+                disabled={creating}
+                placeholder="Gi posten en beskrivelse.."
+                value={postName}
+                onChange={handleInputChange}
+              />
             <PostCommentButtonWrapper>
-              {commentText.length > 0 && (
-                <PostCommentButton onClick={submitNewComment}>
-                  <PostCommentButtonText>SEND</PostCommentButtonText>
+              {postName.length > 0 && (
+                <PostCommentButton onClick={submitNewPost}>
+                  <PostCommentButtonText>OPPRETT</PostCommentButtonText>
                 </PostCommentButton>
               )}
             </PostCommentButtonWrapper>
           </>
         ) : (
-          <LoginHandler buttonText="Logg inn med Google" />
+          <LoginHandler buttonText="Logg inn med Google for å opprette en post" />
         )}
       </CommentFieldWrapper>
     </Busy>

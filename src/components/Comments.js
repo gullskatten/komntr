@@ -2,7 +2,7 @@ import React, { useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import NoResults from './NoResults';
-import PostComment from './PostComment';
+import CreateComment from './CreateComment';
 import Comment from './Comment';
 import Container from '../styleguides/Container';
 import Flex from '../styleguides/Flex';
@@ -101,7 +101,7 @@ export default function Comments(props) {
                   )}
                 >
                   <Flex flexFlow="column-reverse">
-                    {comments.map(comment => {
+                    {comments.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(comment => {
                       return (
                         <CommentPadder key={comment._id}>
                           <Comment comment={comment} />
@@ -116,7 +116,7 @@ export default function Comments(props) {
         </Flex>
         <NewComment basis={'5%'}>
           <Container>
-            <PostComment
+            <CreateComment
               onCreateCommentSuccess={refetchComments}
               channelId={channelId}
               postId={postId}

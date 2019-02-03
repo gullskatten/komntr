@@ -41,8 +41,7 @@ export default function Posts(props) {
   return (
     <Busy busy={fetchingChannel || fetchingPosts}>
       <Container>
-          {/* <CreatePost channelId={channel.id}/> */}
-          <CreatePostItem channelId={channel._id} />
+        <CreatePostItem channelId={channel._id} />
         {posts.map(item => (
           <Post post={item} key={item._id} />
         ))}

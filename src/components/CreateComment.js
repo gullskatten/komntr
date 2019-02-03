@@ -82,7 +82,7 @@ const PostCommentButtonText = styled.span`
   letter-spacing: 0.1rem;
 `;
 
-export default function PostComment(props) {
+export default function CreateComment(props) {
   const { onCreateCommentSuccess, channelId, postId } = props;
   const [commentText, setCommentText] = useState('');
   const userContext = useContext(UserContext);
@@ -121,7 +121,6 @@ export default function PostComment(props) {
                 onChange={handleInputChange}
               />
             </TextAreaWrapper>
-
             <PostCommentButtonWrapper>
               {commentText.length > 0 && (
                 <PostCommentButton onClick={submitNewComment}>
@@ -131,7 +130,7 @@ export default function PostComment(props) {
             </PostCommentButtonWrapper>
           </>
         ) : (
-          <LoginHandler buttonText="Logg inn med Google for å kommentere" />
+          <LoginHandler buttonText="Logg inn for å kommentere" />
         )}
       </CommentFieldWrapper>
     </Busy>
