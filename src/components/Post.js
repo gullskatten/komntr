@@ -1,8 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import determineColorForString from "../utils/determineColorForString";
-
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import determineColorForString from '../utils/determineColorForString';
 
 const StyledObjectLink = styled(({ ...props }) => <Link {...props} />)`
   display: flex;
@@ -14,18 +13,18 @@ const StyledObjectLink = styled(({ ...props }) => <Link {...props} />)`
 `;
 
 const PostName = styled.h2`
-    color: #946ddc;
-    margin: 0.5rem 0;
+  color: #946ddc;
+  margin: 0.5rem 0;
 `;
 
 const PostDescription = styled.p`
-    color: #fff;
-    margin: 0;
+  color: #fff;
+  margin: 0;
 `;
 
 const PostTag = styled.span`
-    margin-right: 10px;
-    color: ${props => props.color};
+  margin-right: 10px;
+  color: ${props => props.color};
 `;
 
 export default function Post({ post }) {
@@ -35,16 +34,11 @@ export default function Post({ post }) {
 
   return (
     <StyledObjectLink to={`/${post.channelId}/${post.id}`}>
-        
-        <PostName>
-        <PostTag color={determineColorForString(post.name)}>
-            #
-        </PostTag>
-         {post.name}
-        </PostName>
-       <PostDescription>
-            {post.description}
-       </PostDescription>
+      <PostName>
+        <PostTag color={determineColorForString(post.name)}>#</PostTag>
+        {post.name}
+      </PostName>
+      <PostDescription>{post.description}</PostDescription>
     </StyledObjectLink>
   );
 }

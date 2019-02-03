@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
-import { Switch, Route } from "react-router-dom";
-import Comments from "./Comments";
-import styled from "styled-components";
-import Channels from "./Channels";
-import Posts from "./Posts";
-import Flex from "../styleguides/Flex";
-import Container from "../styleguides/Container";
-import history from "../utils/history";
-import goBack from "../utils/goBack";
-import { arrowBack } from "../icons";
-import { TitleContext } from "../context/AppTitleContext";
+import React, { useContext } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import Comments from './Comments';
+import styled from 'styled-components';
+import Channels from './Channels';
+import Posts from './Posts';
+import Flex from '../styleguides/Flex';
+import Container from '../styleguides/Container';
+import history from '../utils/history';
+import goBack from '../utils/goBack';
+import { arrowBack } from '../icons';
+import { TitleContext } from '../context/AppTitleContext';
 
 const AppTitleWrapper = styled.nav`
   background: #111;
@@ -23,7 +23,7 @@ const AppTitleWrapper = styled.nav`
   box-shadow: 0px 7px 10px 1px rgb(0, 0, 0, 0.4);
   border-bottom: 5px solid ${props => props.borderColor};
   height: 80px;
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 `;
 
 const BackButton = styled.button`
@@ -46,23 +46,25 @@ const AppTitle = styled.h1`
   margin: 0 auto;
   text-align: center;
   white-space: nowrap;
-  
+
   @media all and (max-width: 450px) {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+    text-overflow: ellipsis;
+    width: 280px;
+    overflow: hidden;
   }
 `;
 
 export default function App(props) {
-
   let { state } = useContext(TitleContext);
 
   return (
     <>
-      <Flex basis={"7%"}>
+      <Flex basis={'7%'}>
         <Container>
           <AppTitleWrapper borderColor={state.titleColor}>
-            {history.location.pathname.includes("/") &&
-            history.location.pathname !== "/" ? (
+            {history.location.pathname.includes('/') &&
+            history.location.pathname !== '/' ? (
               <BackButton
                 borderColor={state.titleColor}
                 onClick={() => history.push(goBack(history.location.pathname))}
@@ -70,12 +72,10 @@ export default function App(props) {
                 {arrowBack}
               </BackButton>
             ) : (
-              <Flex basis={"25%"} />
+              <Flex basis={'25%'} />
             )}
-            <AppTitle>
-              {state.title}
-            </AppTitle>
-            <Flex basis={"25%"} />
+            <AppTitle>{state.title}</AppTitle>
+            <Flex basis={'25%'} />
           </AppTitleWrapper>
         </Container>
       </Flex>
