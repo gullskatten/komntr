@@ -6,14 +6,15 @@ import { UserContext } from '../context/UserContext';
 
 const LoginButton = styled.button`
   border: 0;
-  background-color: purple;
+  background-color: #62469438;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 40px;
   padding: 0.75rem 2rem;
-  font-size: 1rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  transition: 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
   cursor: pointer;
+  font-weight: bold;
 
   &:hover {
     transform: scale(1.03);
@@ -47,7 +48,7 @@ export default function LoginHandler(props) {
     userContext.setData(loggedInUser);
   }
 
-  function handleFailure(response: any) {
+  function handleFailure(response) {
     /**
      * TODO:
      * Handle this by maybe showing some kind of

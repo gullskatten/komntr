@@ -5,7 +5,7 @@ import { userStorage } from '../utils/storageKeys';
  * Custom hook for API-calls
  *
  *    const [busy, response, error, refetch] = useApi({
- *     endpoint: 'posts',
+ *     endpoint: 'channels',
  *     initialData: [],
  *     fetchOnMount: true,
  *     body: {},
@@ -50,6 +50,14 @@ export default function useApi(opts) {
               : undefined
         }
       );
+      const { ok } = await res;
+
+      if(!ok) {
+        if (typeof opts.onError === 'function') {
+          opts.onError("En feil oppstod.");
+        }
+        return;
+      }
 
       const json = await res.json();
       setBusy(false);

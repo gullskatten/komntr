@@ -1,4 +1,4 @@
-const comments = [
+const messages = [
   {
     id: '22',
     created: '2019-01-30T12:22:00.000Z',
@@ -6,7 +6,7 @@ const comments = [
     username: 'ESGU2',
     comment:
       'I går ble det sendt ut en rekke bilder og videoklipp som viser president Nicolás Maduro omkranset av militære ledere som tegn på at han fortsatt har deres lojale støtte. ',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '81',
@@ -14,7 +14,7 @@ const comments = [
     createdBy: 'Espen Gudmundsen',
     username: 'ESGU2',
     comment: 'Noen på?',
-    postId: '3'
+    channelId: '3'
   },
   {
     id: '267',
@@ -22,7 +22,7 @@ const comments = [
     createdBy: 'Øyvind Hertz',
     username: 'OYHE1',
     comment: 'Can you imagine what I would do if I could do all I can?',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '83',
@@ -30,7 +30,7 @@ const comments = [
     createdBy: 'Donald Duck',
     username: 'DODU2',
     comment: 'RL?',
-    postId: '3'
+    channelId: '3'
   },
   {
     id: '1',
@@ -38,7 +38,7 @@ const comments = [
     createdBy: 'Espen Gudmundsen',
     username: 'ESGU2',
     comment: 'Snart hjemme, klar for litt prog. 😅😅😅',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '3',
@@ -46,7 +46,7 @@ const comments = [
     createdBy: 'Guro Groms',
     username: 'GUGR5',
     comment: 'Gleder meg til helgen 💃💃💃',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '7',
@@ -54,7 +54,7 @@ const comments = [
     createdBy: 'Dolly Duck',
     username: 'DODU2',
     comment: 'Haha xD',
-    postId: '2'
+    channelId: '2'
   },
   {
     id: '2',
@@ -62,7 +62,7 @@ const comments = [
     createdBy: 'Espen Gudmundsen',
     username: 'ESGU2',
     comment: 'Vent.. Nå kommenterte jeg feil.',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '8',
@@ -70,7 +70,7 @@ const comments = [
     createdBy: 'Donald Duck',
     username: 'DODU2',
     comment: 'RL?',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '223',
@@ -78,7 +78,7 @@ const comments = [
     createdBy: 'Espen Gudmundsen',
     username: 'ESGU2',
     comment: 'Opportunities multiply as they are seized.',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '831',
@@ -87,7 +87,7 @@ const comments = [
     username: 'ESGU2',
     comment:
       'Know your enemy and know yourself and you can fight a hundred battles without disaster.',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '2637',
@@ -96,7 +96,7 @@ const comments = [
     username: 'OYHE1',
     comment:
       "Any time you need to run sudo something ... to fix something, you should be pausing to think about what's going on.",
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '833',
@@ -104,7 +104,7 @@ const comments = [
     createdBy: 'Donald Duck',
     username: 'DODU2',
     comment: 'All warfare is based on deception.',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '1213',
@@ -113,7 +113,7 @@ const comments = [
     username: 'ROFR3',
     comment:
       'Two roads diverged in a wood, and I -- I took the one less traveled by, and that has made all the difference.',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '3324',
@@ -122,7 +122,7 @@ const comments = [
     username: 'GUGR5',
     comment:
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-    postId: '2'
+    channelId: '2'
   },
   {
     id: '742',
@@ -130,7 +130,7 @@ const comments = [
     createdBy: 'Dolly Duck',
     username: 'DODU2',
     comment: 'Haha xD',
-    postId: '4'
+    channelId: '4'
   },
   {
     id: '2442',
@@ -138,7 +138,7 @@ const comments = [
     createdBy: 'Espen Gudmundsen',
     username: 'ESGU2',
     comment: 'Snart. 🤓🤓',
-    postId: '1'
+    channelId: '1'
   },
   {
     id: '8421',
@@ -146,8 +146,8 @@ const comments = [
     createdBy: 'Donald Duck',
     username: 'DODU2',
     comment: "Er'e noe liv her? 🔥🔥",
-    postId: '3'
+    channelId: '3'
   }
 ];
 
-export default comments;
+export default messages;

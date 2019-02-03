@@ -2,8 +2,8 @@ import React, { useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import NoResults from './NoResults';
-import PostComment from './PostComment';
-import Comment from './Comment';
+import CreateMessage from './CreateMessage';
+import Message from './Message';
 import Container from '../styleguides/Container';
 import Flex from '../styleguides/Flex';
 import { TitleContext } from '../context/AppTitleContext';
@@ -11,18 +11,18 @@ import determineColorForString from '../utils/determineColorForString';
 import useApi from '../hooks/useApi';
 import Busy from './Busy';
 
-const CommentsContainer = styled.div``;
+const MessagesContainer = styled.div``;
 
-const CommentsWrapper = styled.div`
+const MessagesWrapper = styled.div`
   width: 100%;
   height: 73vh;
 `;
 
-const CommentPadder = styled.div`
+const MessagePadder = styled.div`
   margin: 15px 0;
 `;
 
-const NewComment = styled(Flex)`
+const NewMessage = styled(Flex)`
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -32,33 +32,33 @@ const NewComment = styled(Flex)`
   }
 `;
 
-export default function Comments(props) {
+export default function Messages(props) {
   const {
     match: {
-      params: { channelId, postId }
+      params: { categoryId, channelId }
     }
   } = props;
   const scrollRef = useRef(null);
   const { dispatch } = useContext(TitleContext);
 
-  const [fetchingPost, post] = useApi({
-    endpoint: `categories/${channelId}/posts/${postId}`,
+  const [fetchingChannel, channel] = useApi({
+    endpoint: `categories/${categoryId}/channels/${channelId}`,
     initialData: null,
     fetchOnMount: true,
-    onSuccess: currentPost => {
+    onSuccess: currentChannel => {
       dispatch({
         type: 'set-title',
         data: {
-          title: currentPost.name,
-          titleColor: determineColorForString(currentPost.name)
+          title: currentChannel.name,
+          titleColor: determineColorForString(currentChannel.name)
         }
       });
     }
   });
 
   // eslint-disable-next-line
-  const [fetchingComments, comments, _, refetchComments] = useApi({
-    endpoint: `categories/${channelId}/posts/${postId}/comments`,
+  const [fetchingMessages, messages, _, refetchMessages] = useApi({
+    endpoint: `categories/${categoryId}/channels/${channelId}/messages`,
     initialData: [],
     fetchOnMount: true
   });
@@ -67,13 +67,13 @@ export default function Comments(props) {
     if (scrollRef.current) {
       scrollRef.current.scrollToBottom(60);
     }
-  }, [scrollRef.current, comments.length]);
+  }, [scrollRef.current, messages.length]);
 
-  if (!post) return null;
+  if (!channel) return null;
 
   return (
-    <Busy busy={fetchingPost || fetchingComments}>
-      <CommentsContainer>
+    <Busy busy={fetchingChannel || fetchingMessages}>
+      <MessagesContainer>
         <Flex
           justify="center"
           alignItems="center"
@@ -81,9 +81,9 @@ export default function Comments(props) {
           basis="auto"
         >
           <Container>
-            <CommentsWrapper>
-              {!comments || comments.length === 0 ? (
-                <NoResults label={'Be the first to write something here?'} />
+            <MessagesWrapper>
+              {!messages || messages.length === 0 ? (
+                <NoResults label={'Bli den første til å skrive noe her?'} />
               ) : (
                 <Scrollbars
                   ref={c => {
@@ -101,29 +101,29 @@ export default function Comments(props) {
                   )}
                 >
                   <Flex flexFlow="column-reverse">
-                    {comments.map(comment => {
+                    {messages.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(comment => {
                       return (
-                        <CommentPadder key={comment._id}>
-                          <Comment comment={comment} />
-                        </CommentPadder>
+                        <MessagePadder key={comment._id}>
+                          <Message comment={comment} />
+                        </MessagePadder>
                       );
                     })}
                   </Flex>
                 </Scrollbars>
               )}
-            </CommentsWrapper>
+            </MessagesWrapper>
           </Container>
         </Flex>
-        <NewComment basis={'5%'}>
+        <NewMessage basis={'5%'}>
           <Container>
-            <PostComment
-              onCreateCommentSuccess={refetchComments}
+            <CreateMessage
+              onCreateMessageSuccess={refetchMessages}
+              categoryId={categoryId}
               channelId={channelId}
-              postId={postId}
             />
           </Container>
-        </NewComment>
-      </CommentsContainer>
+        </NewMessage>
+      </MessagesContainer>
     </Busy>
   );
 }

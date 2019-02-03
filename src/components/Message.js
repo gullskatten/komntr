@@ -3,24 +3,24 @@ import styled, { css } from 'styled-components';
 import moment from 'moment';
 import { Tooltip } from 'react-tippy';
 import {
-  CommentWrapper,
+  MessageWrapper,
   CircularIconWrapper,
-  CommentUsername,
-  CommentText
-} from '../styleguides/CommentStyles';
+  MessageUsername,
+  MessageText
+} from '../styleguides/MessageStyles';
 import determineColorForString from '../utils/determineColorForString';
 import { UserContext } from '../context/UserContext';
 
-const CommentContentWrapper = styled.div`
+const MessageContentWrapper = styled.div`
   display: flex;
   margin-left: 0.8rem;
 `;
 
-const CommentTextPadder = styled.div`
+const MessageTextPadder = styled.div`
   margin: 0.2rem 0;
 `;
 
-const CommentTextWrapper = styled.div`
+const MessageTextWrapper = styled.div`
   margin: 0 1.5rem;
   padding: 0.5rem 1rem;
   border-radius: 15px;
@@ -30,7 +30,7 @@ const CommentTextWrapper = styled.div`
   position: relative;
 
   ${props =>
-    props.ownComment &&
+    props.ownMessage &&
     css`
       background-color: purple;
     `};
@@ -51,7 +51,7 @@ const CommentTextWrapper = styled.div`
     width: 12px;
 
     ${props =>
-      props.ownComment &&
+      props.ownMessage &&
       css`
         background-color: purple;
       `};
@@ -65,41 +65,41 @@ const Username = styled.p`
   margin-bottom: 2px;
 `;
 
-const Comment = ({ comment, isLast }) => {
+const Message = ({ comment, isLast }) => {
   const userContext = useContext(UserContext);
 
   return (
-    <CommentWrapper isLast={isLast}>
-      <CommentContentWrapper>
+    <MessageWrapper isLast={isLast}>
+      <MessageContentWrapper>
         <Tooltip title={comment.author.name} position="top">
           <CircularIconWrapper
             color={determineColorForString(comment.author.name)}
           >
-            <CommentUsername>
+            <MessageUsername>
               <img
                 src={comment.author.profileImage}
                 alt={comment.author.name}
               />
-            </CommentUsername>
+            </MessageUsername>
           </CircularIconWrapper>
         </Tooltip>
         <Tooltip
           title={`Sendt ${moment(comment.createdAt).calendar()}`}
           position="bottom"
         >
-          <CommentTextWrapper
-            ownComment={comment.author.googleId === userContext.data.id}
+          <MessageTextWrapper
+            ownMessage={comment.author.googleId === userContext.data.id}
           >
             <Username>{comment.author.name}</Username>
-            <CommentTextPadder>
-              <CommentText>
+            <MessageTextPadder>
+              <MessageText>
                 {comment.body || 'Ingen kommentartekst.'}
-              </CommentText>
-            </CommentTextPadder>
-          </CommentTextWrapper>
+              </MessageText>
+            </MessageTextPadder>
+          </MessageTextWrapper>
         </Tooltip>
-      </CommentContentWrapper>
-    </CommentWrapper>
+      </MessageContentWrapper>
+    </MessageWrapper>
   );
 };
-export default Comment;
+export default Message;
