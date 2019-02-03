@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
+import { userStorage } from '../utils/storageKeys';
 
 /**
  * Custom hook for API-calls
- * Usage:
  *
  *    const [busy, response, error, refetch] = useApi({
  *     endpoint: 'posts',
  *     initialData: [],
- *     fetchOnMount: true
+ *     fetchOnMount: true,
+ *     body: {},
+ *     method: 'POST' // default 'GET',
+ *     onSuccess: (response) => {},
+ *     onError: (error) => {}
  *   });
  *
  */
@@ -21,18 +25,45 @@ export default function useApi(opts) {
     try {
       setBusy(true);
 
+      const headers = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      const accessToken = userStorage.get()
+        ? userStorage.get().accessToken
+        : null;
+
+      if (accessToken) {
+        headers.headers.authorization = `Bearer ${accessToken.token}`;
+      }
+
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/${opts.endpoint}`,
         {
-          method: opts.method || 'GET'
+          ...headers,
+          method: opts.method || 'GET',
+          body:
+            opts.method === 'POST' && opts.body
+              ? JSON.stringify(opts.body)
+              : undefined
         }
       );
 
       const json = await res.json();
       setBusy(false);
       setData(json);
+
+      if (typeof opts.onSuccess === 'function') {
+        opts.onSuccess(json);
+      }
     } catch (error) {
       setError(error);
+
+      if (typeof opts.onError === 'function') {
+        opts.onError(error);
+      }
     }
   }
 

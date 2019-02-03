@@ -49,19 +49,17 @@ export default function OwnComment(props) {
     <CommentWrapper isLast={isLast}>
       <OwnCommentWrapper>
         <Tooltip
-          title={`Sendt ${moment(comment.created).calendar()}`}
+          title={`Sendt ${moment(comment.createdAt).calendar()}`}
           position="bottom"
         >
           <CommentTextWrapper secondary>
-            <CommentText>
-              {comment.comment || 'Ingen kommentartekst.'}
-            </CommentText>
+            <CommentText>{comment.body || 'Ingen kommentartekst.'}</CommentText>
           </CommentTextWrapper>
         </Tooltip>
-        <Tooltip title={comment.createdBy} position="top">
-          <CircularIconWrapper color={"#624694"}>
+        <Tooltip title={comment.author.name} position="top">
+          <CircularIconWrapper color={'#624694'}>
             <CommentUsername>
-              {determineInitials(comment.createdBy)}
+              {determineInitials(comment.author.name)}
             </CommentUsername>
           </CircularIconWrapper>
         </Tooltip>

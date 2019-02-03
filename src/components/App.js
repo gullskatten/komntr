@@ -10,6 +10,7 @@ import history from '../utils/history';
 import goBack from '../utils/goBack';
 import { arrowBack } from '../icons';
 import { TitleContext } from '../context/AppTitleContext';
+import { UserContext } from '../context/UserContext';
 
 const AppTitleWrapper = styled.nav`
   background: #111;
@@ -33,6 +34,10 @@ const BackButton = styled.button`
   margin-left: 1rem;
   cursor: pointer;
   transition: all 0.25s ease-in-out;
+
+  @media all and (max-width: 600px) {
+    margin-left: 0;
+  }
 `;
 
 const AppTitle = styled.h1`
@@ -46,17 +51,35 @@ const AppTitle = styled.h1`
   margin: 0 auto;
   text-align: center;
   white-space: nowrap;
+  width: 80%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   @media all and (max-width: 450px) {
     font-size: 1.4rem;
-    text-overflow: ellipsis;
-    width: 280px;
-    overflow: hidden;
+    width: 50%;
+  }
+`;
+
+const Avatar = styled(Flex)`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 2rem;
+
+  @media all and (max-width: 600px) {
+    margin-right: 1rem;
+  }
+
+  img {
+    width: 100%;
   }
 `;
 
 export default function App(props) {
-  let { state } = useContext(TitleContext);
+  const { state } = useContext(TitleContext);
+  const userContext = useContext(UserContext);
 
   return (
     <>
@@ -75,7 +98,14 @@ export default function App(props) {
               <Flex basis={'25%'} />
             )}
             <AppTitle>{state.title}</AppTitle>
-            <Flex basis={'25%'} />
+            <Avatar justify="flex-end">
+              {userContext.data.loggedIn && (
+                <img
+                  src={userContext.data.profileImage}
+                  alt={userContext.data.name}
+                />
+              )}
+            </Avatar>
           </AppTitleWrapper>
         </Container>
       </Flex>

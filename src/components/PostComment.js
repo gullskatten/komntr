@@ -1,9 +1,20 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { fadeInBottom } from "../utils/animations";
+import React, { useState, useContext } from 'react';
+import styled, { css } from 'styled-components';
+import { fadeInBottom } from '../utils/animations';
+import useApi from '../hooks/useApi';
+import Busy from './Busy';
+import { UserContext } from '../context/UserContext';
+import LoginHandler from './LoginHandler';
 
 const CommentFieldWrapper = styled.div`
   background-color: #222;
+
+  ${props =>
+    !props.loggedIn &&
+    css`
+      padding: 2rem;
+      text-align: center;
+    `};
 `;
 
 const TextAreaWrapper = styled.div`
@@ -26,7 +37,7 @@ const StyledTextArea = styled.textarea`
   color: #fff;
   outline: none;
   resize: none;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   width: 100%;
   height: 35px;
 
@@ -37,7 +48,7 @@ const StyledTextArea = styled.textarea`
 
   &::placeholder {
     color: #777;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
 `;
 
@@ -71,39 +82,57 @@ const PostCommentButtonText = styled.span`
 `;
 
 export default function PostComment(props) {
-  const { handlePostComment } = props;
-  const [commentText, setCommentText] = useState("");
+  const { onCreateCommentSuccess, channelId, postId } = props;
+  const [commentText, setCommentText] = useState('');
+  const userContext = useContext(UserContext);
 
   function handleInputChange(e) {
     setCommentText(e.target.value);
   }
 
   function resetInput() {
-    setCommentText("");
+    setCommentText('');
   }
 
-  return (
-    <CommentFieldWrapper>
-      <TextAreaWrapper>
-        <StyledTextArea
-          placeholder="Skriv en ny kommentar.."
-          value={commentText}
-          onChange={handleInputChange}
-        />
-      </TextAreaWrapper>
+  // eslint-disable-next-line
+  const [creating, res, err, submitNewComment] = useApi({
+    endpoint: `categories/${channelId}/posts/${postId}/comments`,
+    method: 'POST',
+    body: {
+      body: commentText
+    },
+    onSuccess: () => {
+      onCreateCommentSuccess();
+      resetInput();
+    }
+  });
 
-      <PostCommentButtonWrapper>
-        {commentText.length > 0 && (
-          <PostCommentButton
-            onClick={() => {
-              handlePostComment(commentText);
-              resetInput();
-            }}
-          >
-            <PostCommentButtonText>SEND</PostCommentButtonText>
-          </PostCommentButton>
+  return (
+    <Busy busy={creating}>
+      <CommentFieldWrapper loggedIn={userContext.data.loggedIn}>
+        {userContext.data.loggedIn ? (
+          <>
+            <TextAreaWrapper>
+              <StyledTextArea
+                disabled={creating}
+                placeholder="Skriv en ny kommentar.."
+                value={commentText}
+                onChange={handleInputChange}
+              />
+            </TextAreaWrapper>
+
+            <PostCommentButtonWrapper>
+              {commentText.length > 0 && (
+                <PostCommentButton onClick={submitNewComment}>
+                  <PostCommentButtonText>SEND</PostCommentButtonText>
+                </PostCommentButton>
+              )}
+            </PostCommentButtonWrapper>
+          </>
+        ) : (
+          <LoginHandler buttonText="Logg inn med Google for å kommentere" />
         )}
-      </PostCommentButtonWrapper>
-    </CommentFieldWrapper>
+      </CommentFieldWrapper>
+    </Busy>
   );
 }

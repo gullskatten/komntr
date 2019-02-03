@@ -8,12 +8,15 @@ import 'moment/locale/nb';
 import 'react-tippy/dist/tippy.css';
 import history from './utils/history';
 import { TitleContextProvider } from './context/AppTitleContext';
+import UserProvider from './context/UserContext';
 
 ReactDOM.render(
   <Router history={history}>
-    <TitleContextProvider>
-      <App />
-    </TitleContextProvider>
+    <UserProvider>
+      <TitleContextProvider>
+        <App />
+      </TitleContextProvider>
+    </UserProvider>
   </Router>,
   document.getElementById('root')
 );

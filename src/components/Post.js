@@ -33,7 +33,7 @@ export default function Post({ post }) {
   }
 
   return (
-    <StyledObjectLink to={`/${post.channelId}/${post.id}`}>
+    <StyledObjectLink to={`/${post.category._id}/${post._id}`}>
       <PostName>
         <PostTag color={determineColorForString(post.name)}>#</PostTag>
         {post.name}
