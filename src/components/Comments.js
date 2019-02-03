@@ -1,19 +1,17 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-import sample_comments from '../data/sample_comments';
 import NoResults from './NoResults';
 import PostComment from './PostComment';
 import Comment from './Comment';
-import OwnComment from './OwnComment';
 import Container from '../styleguides/Container';
 import Flex from '../styleguides/Flex';
 import { TitleContext } from '../context/AppTitleContext';
-import sample_posts from '../data/sample_posts';
 import determineColorForString from '../utils/determineColorForString';
+import useApi from '../hooks/useApi';
+import Busy from './Busy';
 
-const CommentsContainer = styled.div`
-`;
+const CommentsContainer = styled.div``;
 
 const CommentsWrapper = styled.div`
   width: 100%;
@@ -34,104 +32,98 @@ const NewComment = styled(Flex)`
   }
 `;
 
-export default function _Comments(props) {
+export default function Comments(props) {
   const {
     match: {
-      params: { postId }
+      params: { channelId, postId }
     }
   } = props;
-  const currentComments = sample_comments.filter(f => f.postId === postId);
-  const [comments, setComments] = useState(currentComments);
   const scrollRef = useRef(null);
+  const { dispatch } = useContext(TitleContext);
 
-  let { dispatch } = useContext(TitleContext);
-
-  useEffect(
-    () => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollToBottom(60);
-      }
-    
-      const currentPost = sample_posts.find(post => post.id === postId);
-    
-    dispatch({
-      type: "set-title",
-      data: {
-        title: currentPost.name,
-        titleColor: determineColorForString(currentPost.name) 
-      }
-    })},
-    [scrollRef.current, comments.length]
-  );
-
-  function postNewComment(commentText) {
-    if (commentText === '') {
-      return;
+  const [fetchingPost, post] = useApi({
+    endpoint: `categories/${channelId}/posts/${postId}`,
+    initialData: null,
+    fetchOnMount: true,
+    onSuccess: currentPost => {
+      dispatch({
+        type: 'set-title',
+        data: {
+          title: currentPost.name,
+          titleColor: determineColorForString(currentPost.name)
+        }
+      });
     }
+  });
 
-    const newComment = {
-      id: Math.floor(Math.random() * 13337),
-      comment: commentText,
-      username: 'ESGU2',
-      created: new Date(),
-      createdBy: 'Espen Gudmundsen'
-    };
+  // eslint-disable-next-line
+  const [fetchingComments, comments, _, refetchComments] = useApi({
+    endpoint: `categories/${channelId}/posts/${postId}/comments`,
+    initialData: [],
+    fetchOnMount: true
+  });
 
-    setComments([newComment, ...comments]);
-  }
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollToBottom(60);
+    }
+  }, [scrollRef.current, comments.length]);
+
+  if (!post) return null;
 
   return (
-    <CommentsContainer>
-      <Flex
-        justify="center"
-        alignItems="center"
-        direction="column"
-        basis="auto"
-      >
-        <Container>
-          <CommentsWrapper>
-          {!comments || comments.length === 0 ? (
-                  <NoResults label={'Be the first to write something here?'} />
-                ) : (
-            <Scrollbars
-              ref={c => {
-                scrollRef.current = c;
-              }}
-              renderThumbVertical={({ style, ...props }) => (
-                <div
-                  {...props}
-                  style={{
-                    ...style,
-                    backgroundColor: '#624694',
-                    borderRadius: '5px'
+    <Busy busy={fetchingPost || fetchingComments}>
+      <CommentsContainer>
+        <Flex
+          justify="center"
+          alignItems="center"
+          direction="column"
+          basis="auto"
+        >
+          <Container>
+            <CommentsWrapper>
+              {!comments || comments.length === 0 ? (
+                <NoResults label={'Be the first to write something here?'} />
+              ) : (
+                <Scrollbars
+                  ref={c => {
+                    scrollRef.current = c;
                   }}
-                />
-              )}
-            >
-              <Flex flexFlow="column-reverse">
-                    {comments.map((comment, idx) => {
+                  renderThumbVertical={({ style, ...props }) => (
+                    <div
+                      {...props}
+                      style={{
+                        ...style,
+                        backgroundColor: '#624694',
+                        borderRadius: '5px'
+                      }}
+                    />
+                  )}
+                >
+                  <Flex flexFlow="column-reverse">
+                    {comments.map(comment => {
                       return (
-                        <CommentPadder key={comment.id}>
-                          {comment.username === 'ESGU2' ? (
-                            <OwnComment comment={comment} isLast={idx === 0}/>
-                          ) : (
-                            <Comment comment={comment} isLast={idx === 0}/>
-                          )}
+                        <CommentPadder key={comment._id}>
+                          <Comment comment={comment} />
                         </CommentPadder>
                       );
                     })}
-              </Flex>
-            </Scrollbars>)}
-          </CommentsWrapper>
-        </Container>
-      </Flex>
-      <NewComment basis={'5%'}>
-        <Container>
-          <PostComment
-            handlePostComment={commentText => postNewComment(commentText)}
-          />
-        </Container>
-      </NewComment>
-    </CommentsContainer>
+                  </Flex>
+                </Scrollbars>
+              )}
+            </CommentsWrapper>
+          </Container>
+        </Flex>
+        <NewComment basis={'5%'}>
+          <Container>
+            <PostComment
+              onCreateCommentSuccess={refetchComments}
+              channelId={channelId}
+              postId={postId}
+            />
+          </Container>
+        </NewComment>
+      </CommentsContainer>
+    </Busy>
   );
 }

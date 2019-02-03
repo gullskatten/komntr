@@ -5,9 +5,11 @@ export const CommentWrapper = styled.div`
   flex-direction: column;
   white-space: pre-wrap;
 
-  ${props => props.isLast && css`
-    margin-bottom: 60px;
-  `}
+  ${props =>
+    props.isLast &&
+    css`
+      margin-bottom: 60px;
+    `}
 `;
 
 export const CommentText = styled.span`
@@ -19,14 +21,16 @@ export const CommentText = styled.span`
 `;
 
 export const CircularIconWrapper = styled.div`
-  padding: 15px;
-  background-color: ${props => props.color || "#000"};
+  background-color: ${props => props.color || '#000'};
   border-radius: 50%;
   height: 50px;
   width: 50px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
 `;
 
 export const CommentUsername = styled.span`

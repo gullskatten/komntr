@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import moment from "moment";
-import { Tooltip } from "react-tippy";
+import React, { useContext } from 'react';
+import styled, { css } from 'styled-components';
+import moment from 'moment';
+import { Tooltip } from 'react-tippy';
 import {
   CommentWrapper,
   CircularIconWrapper,
   CommentUsername,
   CommentText
-} from "../styleguides/CommentStyles";
-import determineInitials from "../utils/determineInitials";
-import determineColorForString from "../utils/determineColorForString";
+} from '../styleguides/CommentStyles';
+import determineColorForString from '../utils/determineColorForString';
+import { UserContext } from '../context/UserContext';
 
 const CommentContentWrapper = styled.div`
   display: flex;
@@ -29,9 +29,15 @@ const CommentTextWrapper = styled.div`
   flex-direction: column;
   position: relative;
 
+  ${props =>
+    props.ownComment &&
+    css`
+      background-color: purple;
+    `};
+
   &::before {
     background-color: #555;
-    content: "\00a0";
+    content: '\00a0';
     display: block;
     height: 16px;
     position: absolute;
@@ -43,6 +49,12 @@ const CommentTextWrapper = styled.div`
     -o-transform: rotate(24deg) skew(-33deg);
     -webkit-transform: rotate(24deg) skew(-33deg);
     width: 12px;
+
+    ${props =>
+      props.ownComment &&
+      css`
+        background-color: purple;
+      `};
   }
 `;
 
@@ -54,27 +66,34 @@ const Username = styled.p`
 `;
 
 const Comment = ({ comment, isLast }) => {
+  const userContext = useContext(UserContext);
+
   return (
     <CommentWrapper isLast={isLast}>
       <CommentContentWrapper>
-        <Tooltip title={comment.createdBy} position="top">
+        <Tooltip title={comment.author.name} position="top">
           <CircularIconWrapper
-            color={determineColorForString(comment.createdBy)}
+            color={determineColorForString(comment.author.name)}
           >
             <CommentUsername>
-              {determineInitials(comment.createdBy)}
+              <img
+                src={comment.author.profileImage}
+                alt={comment.author.name}
+              />
             </CommentUsername>
           </CircularIconWrapper>
         </Tooltip>
         <Tooltip
-          title={`Sendt ${moment(comment.created).calendar()}`}
+          title={`Sendt ${moment(comment.createdAt).calendar()}`}
           position="bottom"
         >
-          <CommentTextWrapper>
-            <Username>{comment.createdBy}</Username>
+          <CommentTextWrapper
+            ownComment={comment.author.googleId === userContext.data.id}
+          >
+            <Username>{comment.author.name}</Username>
             <CommentTextPadder>
               <CommentText>
-                {comment.comment || "Ingen kommentartekst."}
+                {comment.body || 'Ingen kommentartekst.'}
               </CommentText>
             </CommentTextPadder>
           </CommentTextWrapper>

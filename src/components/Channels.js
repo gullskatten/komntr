@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Container from '../styleguides/Container';
-import sample_channels from '../data/sample_channels';
 import determineInitials from '../utils/determineInitials';
 import Flex from '../styleguides/Flex';
 import determineColorForString from '../utils/determineColorForString';
 import { TitleContext } from '../context/AppTitleContext';
+import useApi from '../hooks/useApi';
+import Busy from './Busy';
 
 const StyledChannelLink = styled(({ ...props }) => <Link {...props} />)`
   text-align: center;
@@ -45,34 +46,44 @@ const ChannelsGrid = styled.div`
 `;
 
 export default function Channels() {
-  let { dispatch } = useContext(TitleContext);
+  const { dispatch } = useContext(TitleContext);
 
   useEffect(() => {
     dispatch({
-      type: "default-title",
+      type: 'default-title'
     });
   }, []);
 
+  const [busy, categories] = useApi({
+    endpoint: 'categories',
+    fetchOnMount: true,
+    initialData: []
+  });
+
   return (
-    <Container gutterTop>
-      <ChannelsGrid>
-        {sample_channels.map(c => {
-          return (
-            <Flex
-              child
-              threeCol
-              key={c.id}
-              alignItems="center"
-              justify="center"
-            >
-              <StyledChannelLink to={`/${c.id}`}>
-                <StyledInitials color={determineColorForString(c.name)}>{determineInitials(c.name)}</StyledInitials>
-                <StyledName>{c.name}</StyledName>
-              </StyledChannelLink>
-            </Flex>
-          );
-        })}
-      </ChannelsGrid>
-    </Container>
+    <Busy busy={busy}>
+      <Container gutterTop>
+        <ChannelsGrid>
+          {categories.map(c => {
+            return (
+              <Flex
+                child
+                threeCol
+                key={c._id}
+                alignItems="center"
+                justify="center"
+              >
+                <StyledChannelLink to={`/${c._id}`}>
+                  <StyledInitials color={determineColorForString(c.name)}>
+                    {determineInitials(c.name)}
+                  </StyledInitials>
+                  <StyledName>{c.name}</StyledName>
+                </StyledChannelLink>
+              </Flex>
+            );
+          })}
+        </ChannelsGrid>
+      </Container>
+    </Busy>
   );
 }
