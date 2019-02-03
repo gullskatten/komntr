@@ -90,6 +90,9 @@ export default function _Comments(props) {
       >
         <Container>
           <CommentsWrapper>
+          {!comments || comments.length === 0 ? (
+                  <NoResults label={'Be the first to write something here?'} />
+                ) : (
             <Scrollbars
               ref={c => {
                 scrollRef.current = c;
@@ -106,10 +109,6 @@ export default function _Comments(props) {
               )}
             >
               <Flex flexFlow="column-reverse">
-                {!comments || comments.length === 0 ? (
-                  <NoResults label={'Ingen har kommentert her enda. 😞'} />
-                ) : (
-                  <>
                     {comments.map((comment, idx) => {
                       return (
                         <CommentPadder key={comment.id}>
@@ -121,10 +120,8 @@ export default function _Comments(props) {
                         </CommentPadder>
                       );
                     })}
-                  </>
-                )}
               </Flex>
-            </Scrollbars>
+            </Scrollbars>)}
           </CommentsWrapper>
         </Container>
       </Flex>
