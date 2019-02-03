@@ -3,20 +3,20 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { Tooltip } from 'react-tippy';
 import {
-  CommentWrapper,
+  MessageWrapper,
   CircularIconWrapper,
-  CommentUsername,
-  CommentText
-} from '../styleguides/CommentStyles';
+  MessageUsername,
+  MessageText
+} from '../styleguides/MessageStyles';
 import determineInitials from '../utils/determineInitials';
 
-const OwnCommentWrapper = styled.div`
+const OwnMessageWrapper = styled.div`
   display: flex;
   margin-left: auto;
   margin-right: 0.8rem;
 `;
 
-export const CommentTextWrapper = styled.div`
+export const MessageTextWrapper = styled.div`
   margin: 0 1.5rem;
   padding: 0.8rem 1rem;
   border-radius: 15px;
@@ -42,28 +42,28 @@ export const CommentTextWrapper = styled.div`
   }
 `;
 
-export default function OwnComment(props) {
+export default function OwnMessage(props) {
   const { comment, isLast } = props;
 
   return (
-    <CommentWrapper isLast={isLast}>
-      <OwnCommentWrapper>
+    <MessageWrapper isLast={isLast}>
+      <OwnMessageWrapper>
         <Tooltip
           title={`Sendt ${moment(comment.createdAt).calendar()}`}
           position="bottom"
         >
-          <CommentTextWrapper secondary>
-            <CommentText>{comment.body || 'Ingen kommentartekst.'}</CommentText>
-          </CommentTextWrapper>
+          <MessageTextWrapper secondary>
+            <MessageText>{comment.body || 'Ingen kommentartekst.'}</MessageText>
+          </MessageTextWrapper>
         </Tooltip>
         <Tooltip title={comment.author.name} position="top">
           <CircularIconWrapper color={'#624694'}>
-            <CommentUsername>
+            <MessageUsername>
               {determineInitials(comment.author.name)}
-            </CommentUsername>
+            </MessageUsername>
           </CircularIconWrapper>
         </Tooltip>
-      </OwnCommentWrapper>
-    </CommentWrapper>
+      </OwnMessageWrapper>
+    </MessageWrapper>
   );
 }

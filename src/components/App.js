@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Comments from './Comments';
+import Messages from './Messages';
 import styled from 'styled-components';
+import Categories from './Categories';
 import Channels from './Channels';
-import Posts from './Posts';
 import Flex from '../styleguides/Flex';
 import Container from '../styleguides/Container';
 import history from '../utils/history';
@@ -11,7 +11,7 @@ import goBack from '../utils/goBack';
 import { arrowBack } from '../icons';
 import { TitleContext } from '../context/AppTitleContext';
 import { UserContext } from '../context/UserContext';
-import CreatePost from './CreatePost';
+import CreateChannel from './CreateChannel';
 
 const AppTitleWrapper = styled.nav`
   background: #111;
@@ -111,10 +111,10 @@ export default function App(props) {
         </Container>
       </Flex>
       <Switch>
-        <Route path="/" exact component={Channels} />
-        <Route path="/:channelId" exact component={Posts} />
-        <Route path="/:channelId/create" exact component={CreatePost} />
-        <Route path="/:channelId/:postId" exact component={Comments} />
+        <Route path="/" exact component={Categories} />
+        <Route path="/:categoryId" exact component={Channels} />
+        <Route path="/:categoryId/create" exact component={CreateChannel} />
+        <Route path="/:categoryId/:channelId" exact component={Messages} />
       </Switch>
     </>
   );

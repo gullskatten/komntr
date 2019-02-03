@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const CommentWrapper = styled.div`
+export const MessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   white-space: pre-wrap;
@@ -12,7 +12,7 @@ export const CommentWrapper = styled.div`
     `}
 `;
 
-export const CommentText = styled.span`
+export const MessageText = styled.span`
   color: #fff;
   max-width: 500px;
   font-family: 'Roboto', sans-serif;
@@ -33,7 +33,7 @@ export const CircularIconWrapper = styled.div`
   }
 `;
 
-export const CommentUsername = styled.span`
+export const MessageUsername = styled.span`
   color: #fff;
   font-size: 1.2rem;
 `;

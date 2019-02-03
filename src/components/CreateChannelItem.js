@@ -12,34 +12,34 @@ const StyledObjectLink = styled(({ ...props }) => <Link {...props} />)`
   border-bottom: 1px solid #624694;
 `;
 
-const PostName = styled.h2`
+const ChannelName = styled.h2`
   color: #946ddc;
   margin: 0.5rem 0;
 `;
 
-const PostDescription = styled.p`
+const ChannelDescription = styled.p`
   color: #fff;
   margin: 0;
 `;
 
-const PostTag = styled.span`
+const ChannelTag = styled.span`
   margin-right: 10px;
   color: ${props => props.color};
 `;
 
-export default function CreatePostItem({ channelId }) {
+export default function CreateChannelItem({ categoryId }) {
   
-  if (!channelId) {
+  if (!categoryId) {
     return null;
   }
 
   return (
-    <StyledObjectLink to={`/${channelId}/create`}>
-      <PostName>
-        <PostTag color={determineColorForString("Opprett en ny post")}>+</PostTag>
-        Opprett en ny post
-      </PostName>
-      <PostDescription>Trykk her for å opprette en ny post.</PostDescription>
+    <StyledObjectLink to={`/${categoryId}/create`}>
+      <ChannelName>
+        <ChannelTag color={determineColorForString("Ny kanal")}>+</ChannelTag>
+        Opprett en ny kanal
+      </ChannelName>
+      <ChannelDescription>Trykk her for å opprette en ny kanal.</ChannelDescription>
     </StyledObjectLink>
   );
 }

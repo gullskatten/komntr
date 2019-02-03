@@ -1,88 +1,51 @@
-import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import Container from '../styleguides/Container';
-import determineInitials from '../utils/determineInitials';
-import Flex from '../styleguides/Flex';
-import determineColorForString from '../utils/determineColorForString';
+import React, { useContext } from 'react';
+import Channel from './Channel';
 import { TitleContext } from '../context/AppTitleContext';
+import determineColorForString from '../utils/determineColorForString';
+import Container from '../styleguides/Container';
 import useApi from '../hooks/useApi';
 import Busy from './Busy';
+import CreateChannelItem from './CreateChannelItem';
 
-const StyledChannelLink = styled(({ ...props }) => <Link {...props} />)`
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-decoration: none;
-`;
-
-const StyledInitials = styled.div`
-  padding: 4rem;
-  background-color: ${props => props.color};
-  color: #fff;
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  font-weight: bold;
-`;
-
-const StyledName = styled.h2`
-  color: #fff;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-size: 1.35rem;
-  font-weight: bold;
-`;
-
-const ChannelsGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-export default function Channels() {
+export default function Channels(props) {
+  
   const { dispatch } = useContext(TitleContext);
+  const {
+    match: {
+      params: { categoryId }
+    }
+  } = props;
 
-  useEffect(() => {
-    dispatch({
-      type: 'default-title'
-    });
-  }, []);
+  const [fetchingCategory, category] = useApi({
+    endpoint: `categories/${categoryId}`,
+    fetchOnMount: true,
+    initialData: null,
+    onSuccess: currentCategory => {
+      dispatch({
+        type: 'set-title',
+        data: {
+          title: currentCategory.name,
+          titleColor: determineColorForString(currentCategory.name)
+        }
+      });
+    }
+  });
 
-  const [busy, categories] = useApi({
-    endpoint: 'categories',
+  const [fetchingChannels, channels] = useApi({
+    endpoint: `categories/${categoryId}/channels`,
     fetchOnMount: true,
     initialData: []
   });
 
+  if (!category) return null;
+
   return (
-    <Busy busy={busy}>
-      <Container gutterTop>
-        <ChannelsGrid>
-          {categories.map(c => {
-            return (
-              <Flex
-                child
-                threeCol
-                key={c._id}
-                alignItems="center"
-                justify="center"
-              >
-                <StyledChannelLink to={`/${c._id}`}>
-                  <StyledInitials color={determineColorForString(c.name)}>
-                    {determineInitials(c.name)}
-                  </StyledInitials>
-                  <StyledName>{c.name}</StyledName>
-                </StyledChannelLink>
-              </Flex>
-            );
-          })}
-        </ChannelsGrid>
+    <Busy busy={fetchingCategory || fetchingChannels}>
+      <Container>
+        <CreateChannelItem categoryId={category._id} />
+        {channels.map(item => (
+          <Channel channel={item} key={item._id} />
+        ))}
       </Container>
     </Busy>
   );

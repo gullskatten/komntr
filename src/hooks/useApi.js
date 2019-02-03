@@ -5,7 +5,7 @@ import { userStorage } from '../utils/storageKeys';
  * Custom hook for API-calls
  *
  *    const [busy, response, error, refetch] = useApi({
- *     endpoint: 'posts',
+ *     endpoint: 'channels',
  *     initialData: [],
  *     fetchOnMount: true,
  *     body: {},
