@@ -108,7 +108,7 @@ export default function CreateChannel(props) {
       dispatch({
         type: 'set-title',
         data: {
-          title: 'Opprett ny kanal',
+          title: 'Opprett ny channel',
           titleColor: '#624694'
         }
       });
@@ -175,7 +175,7 @@ export default function CreateChannel(props) {
             </CreateMessageButtonWrapper>
           </>
         ) : (
-          <LoginHandler buttonText="Logg inn med Google for å opprette en kanal" />
+          <LoginHandler buttonText="Logg inn med Google for å opprette en channel" />
         )}
       </MessageFieldWrapper>
     </Busy>
