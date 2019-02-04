@@ -29,7 +29,6 @@ const InputWrapper = styled.div`
 `;
 
 const StyledInput = styled.input`
- 
   padding: 0.6rem 0.8rem;
   outline: 0;
   font-size: 2.5rem;
@@ -88,7 +87,6 @@ const ChannelTag = styled.span`
 `;
 
 export default function CreateChannel(props) {
-
   const { dispatch } = useContext(TitleContext);
   const userContext = useContext(UserContext);
   const [hasLoadedCategory, setHasLoadedCategory] = useState(false);
@@ -110,14 +108,14 @@ export default function CreateChannel(props) {
       dispatch({
         type: 'set-title',
         data: {
-          title: "Opprett ny channel",
-          titleColor: "#624694"
+          title: 'Opprett ny channel',
+          titleColor: '#624694'
         }
       });
     },
     onError: e => {
       setHasLoadedCategory(true);
-    }  
+    }
   });
 
   function resetInput() {
@@ -130,22 +128,20 @@ export default function CreateChannel(props) {
     endpoint: `categories/${categoryId}/channels`,
     method: 'POST',
     body: {
-     name: channelName, 
-     description: channelDescription
+      name: channelName,
+      description: channelDescription
     },
     onSuccess: newChannel => {
       resetInput();
-      props.history.push(`/${categoryId}/${newChannel._id}`)
+      props.history.push(`/${categoryId}/${newChannel._id}`);
     },
     onError: e => {
       // TODO: Fortell brukeren at dette feilet!
     }
   });
 
-  if(hasLoadedCategory && (category === undefined || category === null)) {
-    return (
-      <NoContentFound label="Fant ikke kanalen du lette etter.." />
-    )
+  if (hasLoadedCategory && (category === undefined || category === null)) {
+    return <NoContentFound label="Fant ikke kanalen du lette etter.." />;
   }
   return (
     <Busy busy={creating || fetchingCategory}>
@@ -153,7 +149,9 @@ export default function CreateChannel(props) {
         {userContext.data.loggedIn ? (
           <>
             <InputWrapper>
-              <ChannelTag color={determineColorForString(channelName)}>#</ChannelTag>
+              <ChannelTag color={determineColorForString(channelName)}>
+                #
+              </ChannelTag>
               <StyledInput
                 disabled={creating}
                 placeholder="Gi kanalen et navn.."
@@ -162,11 +160,12 @@ export default function CreateChannel(props) {
               />
             </InputWrapper>
             <StyledInput
-                disabled={creating}
-                placeholder={`(Valgfritt) Angi en kort beskrivelse av ${channelName || 'kanalen'}..`}
-                value={channelDescription}
-                onChange={e => setChannelDescription(e.target.value)}
-              />
+              disabled={creating}
+              placeholder={`(Valgfritt) Angi en kort beskrivelse av ${channelName ||
+                'kanalen'}..`}
+              value={channelDescription}
+              onChange={e => setChannelDescription(e.target.value)}
+            />
             <CreateMessageButtonWrapper>
               {channelName.length > 0 && (
                 <CreateMessageButton onClick={submitNewChannel}>

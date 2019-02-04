@@ -5,6 +5,7 @@ const Flex = styled.div`
   justify-content: ${props => (props.justify ? props.justify : 'unset')};
   align-items: ${props => (props.alignItems ? props.alignItems : 'unset')};
   flex-direction: ${props => (props.direction ? props.direction : 'row')};
+  flex-wrap: wrap;
 
   ${props =>
     props.basis &&
@@ -19,6 +20,12 @@ const Flex = styled.div`
     `};
 
   ${props =>
+    props.fullWidth &&
+    css`
+      width: 100%;
+    `};
+
+  ${props =>
     props.child &&
     css`
       padding: 0 ${props.gap || '1rem'};
@@ -30,14 +37,18 @@ const Flex = styled.div`
   ${props =>
     props.threeCol &&
     css`
-    flex: 1 33%;
+      flex: 1 33%;
 
+      @media all and (max-width: 650px) {
+        flex: 1 50%;
+      }
+    `}
 
-    @media all and (max-width: 650px) {
-      flex: 1 50%;
-    }
-  `
-  }  
+  ${props =>
+    props.gutterBottom &&
+    css`
+      margin-bottom: 2rem;
+    `};
 `;
 
 export default Flex;
