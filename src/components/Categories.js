@@ -35,7 +35,7 @@ const StyledName = styled.div`
 `;
 
 const StyledCreateName = styled(StyledName)`
-  background-color: #000;
+  background-color: ${props => props.transparent ? 'transparent' : '#000'};
   border: 4px dotted #624694;
   padding: calc(4rem - 4px);
   text-transform: uppercase;
@@ -90,8 +90,8 @@ export default function Categories() {
               </StyledCategoryLink>
             ) : (
               <StyledCategoryLink to="#">
-                <StyledCreateName>
-                  <LoginHandler />
+                <StyledCreateName transparent>
+                  <LoginHandler/>
                 </StyledCreateName>
               </StyledCategoryLink>
             )}

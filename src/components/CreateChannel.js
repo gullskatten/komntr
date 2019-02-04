@@ -262,7 +262,7 @@ export default function CreateChannel(props) {
               )}
           </>
         ) : (
-          <LoginHandler buttonText="Logg inn med Google for å opprette en kanal" />
+          <LoginHandler buttonText="Logg inn for å opprette en ny kanal" />
         )}
       </CreateChannelWrapper>
     </Busy>
