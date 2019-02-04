@@ -91,7 +91,10 @@ export default function CreateCategory(props) {
         <form
           onSubmit={e => {
             e.preventDefault();
-            submit();
+
+            if (categoryName !== '') {
+              submit();
+            }
           }}
         >
           <StyledInput
@@ -102,7 +105,7 @@ export default function CreateCategory(props) {
           />
           <HiddenButton
             disabled={creating}
-            active={categoryName.length > 1}
+            active={categoryName.length > 0}
             type="submit"
           >
             Lagre
