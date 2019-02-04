@@ -113,7 +113,7 @@ export default function App(props) {
       </Flex>
       <Switch>
         <Route path="/" exact component={Categories} />
-        <Route path="/opprett" exact component={CreateCategory} />
+        <Route path="/create" exact component={CreateCategory} />
         <Route path="/:categoryId" exact component={Channels} />
         <Route path="/:categoryId/create" exact component={CreateChannel} />
         <Route path="/:categoryId/:channelId" exact component={Messages} />
