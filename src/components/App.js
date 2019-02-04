@@ -12,6 +12,7 @@ import { arrowBack } from '../icons';
 import { TitleContext } from '../context/AppTitleContext';
 import { UserContext } from '../context/UserContext';
 import CreateChannel from './CreateChannel';
+import CreateCategory from './CreateCategory';
 
 const AppTitleWrapper = styled.nav`
   background: #111;
@@ -112,6 +113,7 @@ export default function App(props) {
       </Flex>
       <Switch>
         <Route path="/" exact component={Categories} />
+        <Route path="/opprett" exact component={CreateCategory} />
         <Route path="/:categoryId" exact component={Channels} />
         <Route path="/:categoryId/create" exact component={CreateChannel} />
         <Route path="/:categoryId/:channelId" exact component={Messages} />

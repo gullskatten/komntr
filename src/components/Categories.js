@@ -2,12 +2,13 @@ import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Container from '../styleguides/Container';
-import determineInitials from '../utils/determineInitials';
 import Flex from '../styleguides/Flex';
 import determineColorForString from '../utils/determineColorForString';
 import { TitleContext } from '../context/AppTitleContext';
 import useApi from '../hooks/useApi';
 import Busy from './Busy';
+import { UserContext } from '../context/UserContext';
+import LoginHandler from './LoginHandler';
 
 const StyledCategoryLink = styled(({ ...props }) => <Link {...props} />)`
   text-align: center;
@@ -16,28 +17,28 @@ const StyledCategoryLink = styled(({ ...props }) => <Link {...props} />)`
   align-items: center;
   flex-direction: column;
   text-decoration: none;
+  width: 100%;
 `;
 
-const StyledInitials = styled.div`
+const StyledName = styled.div`
   padding: 4rem;
   background-color: ${props => props.color};
   color: #fff;
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 200px;
   font-size: 2rem;
   font-weight: bold;
+  width: 100%;
+  text-transform: uppercase;
 `;
 
-const StyledName = styled.h2`
-  color: #fff;
-  letter-spacing: 1px;
+const StyledCreateName = styled(StyledName)`
+  background-color: #000;
+  border: 4px dotted #fff;
+  padding: calc(4rem - 4px);
   text-transform: uppercase;
-  font-size: 1.35rem;
-  font-weight: bold;
 `;
 
 const CategoriesGrid = styled.div`
@@ -45,8 +46,19 @@ const CategoriesGrid = styled.div`
   flex-wrap: wrap;
 `;
 
+const CategoryItem = styled(Flex)`
+  @media all and (max-width: 900px) {
+    flex-basis: 50%;
+  }
+
+  @media all and (max-width: 600px) {
+    flex-basis: 100%;
+  }
+`;
+
 export default function Categories() {
   const { dispatch } = useContext(TitleContext);
+  const userContext = useContext(UserContext);
 
   useEffect(() => {
     dispatch({
@@ -59,29 +71,47 @@ export default function Categories() {
     fetchOnMount: true,
     initialData: []
   });
-  
-  console.log(categories)
 
   return (
     <Busy busy={busy}>
       <Container gutterTop>
         <CategoriesGrid>
+          <CategoryItem
+            child
+            basis="33%"
+            gutterBottom
+            alignItems="center"
+            justify="center"
+            fullWidth
+          >
+            {userContext.data.loggedIn ? (
+              <StyledCategoryLink to={`/opprett`}>
+                <StyledCreateName>Oprett kategori</StyledCreateName>
+              </StyledCategoryLink>
+            ) : (
+              <StyledCategoryLink to="#">
+                <StyledCreateName>
+                  <LoginHandler />
+                </StyledCreateName>
+              </StyledCategoryLink>
+            )}
+          </CategoryItem>
           {categories.map(c => {
             return (
-              <Flex
+              <CategoryItem
                 child
-                threeCol
+                basis="33%"
+                gutterBottom
                 key={c._id}
                 alignItems="center"
                 justify="center"
               >
                 <StyledCategoryLink to={`/${c._id}`}>
-                  <StyledInitials color={determineColorForString(c.name)}>
-                    {determineInitials(c.name)}
-                  </StyledInitials>
-                  <StyledName>{c.name}</StyledName>
+                  <StyledName color={determineColorForString(c.name)}>
+                    {c.name}
+                  </StyledName>
                 </StyledCategoryLink>
-              </Flex>
+              </CategoryItem>
             );
           })}
         </CategoriesGrid>
