@@ -1,14 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import moment from 'moment';
-import { Tooltip } from 'react-tippy';
+import React from "react";
+import styled from "styled-components";
+import moment from "moment";
+import { Tooltip } from "react-tippy";
 import {
   MessageWrapper,
   CircularIconWrapper,
-  MessageUsername,
   MessageText
-} from '../styleguides/MessageStyles';
-import determineInitials from '../utils/determineInitials';
+} from "../styleguides/MessageStyles";
+import determineColorForString from "../utils/determineColorForString";
 
 const OwnMessageWrapper = styled.div`
   display: flex;
@@ -16,7 +15,7 @@ const OwnMessageWrapper = styled.div`
   margin-right: 0.8rem;
 `;
 
-export const MessageTextWrapper = styled.div`
+export const MessageContentWrapper = styled.div`
   margin: 0 1.5rem;
   padding: 0.8rem 1rem;
   border-radius: 15px;
@@ -27,7 +26,7 @@ export const MessageTextWrapper = styled.div`
 
   &::before {
     background-color: #624694;
-    content: '\00a0';
+    content: "\00a0";
     display: block;
     height: 16px;
     position: absolute;
@@ -42,9 +41,7 @@ export const MessageTextWrapper = styled.div`
   }
 `;
 
-export default function OwnMessage(props) {
-  const { comment, isLast } = props;
-
+const OwnMessage = ({ comment, isLast }) => {
   return (
     <MessageWrapper isLast={isLast}>
       <OwnMessageWrapper>
@@ -52,18 +49,20 @@ export default function OwnMessage(props) {
           title={`Sendt ${moment(comment.createdAt).calendar()}`}
           position="bottom"
         >
-          <MessageTextWrapper secondary>
-            <MessageText>{comment.body || 'Ingen kommentartekst.'}</MessageText>
-          </MessageTextWrapper>
+          <MessageContentWrapper>
+            <MessageText>{comment.body || "Ingen kommentartekst."}</MessageText>
+          </MessageContentWrapper>{" "}
         </Tooltip>
+
         <Tooltip title={comment.author.name} position="top">
-          <CircularIconWrapper color={'#624694'}>
-            <MessageUsername>
-              {determineInitials(comment.author.name)}
-            </MessageUsername>
+          <CircularIconWrapper
+            color={determineColorForString(comment.author.name)}
+          >
+            <img src={comment.author.profileImage} alt={comment.author.name} />
           </CircularIconWrapper>
         </Tooltip>
       </OwnMessageWrapper>
     </MessageWrapper>
   );
-}
+};
+export default OwnMessage;

@@ -32,8 +32,3 @@ export const CircularIconWrapper = styled.div`
     width: 100%;
   }
 `;
-
-export const MessageUsername = styled.span`
-  color: #fff;
-  font-size: 1.2rem;
-`;

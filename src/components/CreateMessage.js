@@ -20,7 +20,7 @@ const MessageFieldWrapper = styled.div`
 
 const TextAreaWrapper = styled.div`
   width: 100%;
-  max-width: 1500px;
+  max-width: 1920px;
   background: #111;
   position: relative;
 `;

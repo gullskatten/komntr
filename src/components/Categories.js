@@ -36,7 +36,7 @@ const StyledName = styled.div`
 
 const StyledCreateName = styled(StyledName)`
   background-color: #000;
-  border: 4px dotted #fff;
+  border: 4px dotted #624694;
   padding: calc(4rem - 4px);
   text-transform: uppercase;
 `;
@@ -86,7 +86,7 @@ export default function Categories() {
           >
             {userContext.data.loggedIn ? (
               <StyledCategoryLink to={`/create`}>
-                <StyledCreateName>Oprett kategori</StyledCreateName>
+                <StyledCreateName>Opprett kategori</StyledCreateName>
               </StyledCategoryLink>
             ) : (
               <StyledCategoryLink to="#">

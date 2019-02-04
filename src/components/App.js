@@ -76,6 +76,7 @@ const Avatar = styled(Flex)`
 
   img {
     width: 100%;
+    height: 100%;
   }
 `;
 

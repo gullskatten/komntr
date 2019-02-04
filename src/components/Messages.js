@@ -4,12 +4,14 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import NoResults from './NoResults';
 import CreateMessage from './CreateMessage';
 import Message from './Message';
+import OwnMessage from './OwnMessage';
 import Container from '../styleguides/Container';
 import Flex from '../styleguides/Flex';
 import { TitleContext } from '../context/AppTitleContext';
 import determineColorForString from '../utils/determineColorForString';
 import useApi from '../hooks/useApi';
 import Busy from './Busy';
+import { UserContext } from '../context/UserContext';
 
 const MessagesContainer = styled.div``;
 
@@ -33,13 +35,17 @@ const NewMessage = styled(Flex)`
 `;
 
 export default function Messages(props) {
+  
   const {
     match: {
       params: { categoryId, channelId }
     }
   } = props;
+
   const scrollRef = useRef(null);
+
   const { dispatch } = useContext(TitleContext);
+  const userContext = useContext(UserContext);
 
   const [fetchingChannel, channel] = useApi({
     endpoint: `categories/${categoryId}/channels/${channelId}`,
@@ -101,10 +107,19 @@ export default function Messages(props) {
                   )}
                 >
                   <Flex flexFlow="column-reverse">
-                    {messages.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(comment => {
+                    {messages.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map((comment, idx) => {
+                      
+                      if(comment.author.googleId === userContext.data.id) {
+                        return (
+                          <MessagePadder key={comment._id}>
+                            <OwnMessage comment={comment} isLast={idx === 0}/>
+                          </MessagePadder>
+                        );
+                      }
+
                       return (
                         <MessagePadder key={comment._id}>
-                          <Message comment={comment} />
+                          <Message comment={comment} isLast={idx === 0}/>
                         </MessagePadder>
                       );
                     })}

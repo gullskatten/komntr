@@ -1,15 +1,14 @@
-import React, { useContext } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import moment from 'moment';
 import { Tooltip } from 'react-tippy';
 import {
   MessageWrapper,
   CircularIconWrapper,
-  MessageUsername,
-  MessageText
+  MessageText,
 } from '../styleguides/MessageStyles';
 import determineColorForString from '../utils/determineColorForString';
-import { UserContext } from '../context/UserContext';
+
 
 const MessageContentWrapper = styled.div`
   display: flex;
@@ -29,12 +28,6 @@ const MessageTextWrapper = styled.div`
   flex-direction: column;
   position: relative;
 
-  ${props =>
-    props.ownMessage &&
-    css`
-      background-color: purple;
-    `};
-
   &::before {
     background-color: #555;
     content: '\00a0';
@@ -49,16 +42,10 @@ const MessageTextWrapper = styled.div`
     -o-transform: rotate(24deg) skew(-33deg);
     -webkit-transform: rotate(24deg) skew(-33deg);
     width: 12px;
-
-    ${props =>
-      props.ownMessage &&
-      css`
-        background-color: purple;
-      `};
   }
 `;
 
-const Username = styled.p`
+export const Username = styled.p`
   margin: 0;
   font-weight: bold;
   color: #fff;
@@ -66,8 +53,6 @@ const Username = styled.p`
 `;
 
 const Message = ({ comment, isLast }) => {
-  const userContext = useContext(UserContext);
-
   return (
     <MessageWrapper isLast={isLast}>
       <MessageContentWrapper>
@@ -75,21 +60,17 @@ const Message = ({ comment, isLast }) => {
           <CircularIconWrapper
             color={determineColorForString(comment.author.name)}
           >
-            <MessageUsername>
               <img
                 src={comment.author.profileImage}
                 alt={comment.author.name}
               />
-            </MessageUsername>
           </CircularIconWrapper>
         </Tooltip>
         <Tooltip
           title={`Sendt ${moment(comment.createdAt).calendar()}`}
           position="bottom"
         >
-          <MessageTextWrapper
-            ownMessage={comment.author.googleId === userContext.data.id}
-          >
+          <MessageTextWrapper>
             <Username>{comment.author.name}</Username>
             <MessageTextPadder>
               <MessageText>
